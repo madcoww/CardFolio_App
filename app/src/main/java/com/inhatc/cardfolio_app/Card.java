@@ -9,11 +9,11 @@ package com.inhatc.cardfolio_app;
 
 import android.net.Uri;
 
-public class Card {
+import java.io.Serializable;
+
+public class Card implements Serializable {
 
     private String c_id;
-
-    private Uri imageUri;
 
     private String card_logo;
     private String u_id;
@@ -29,9 +29,8 @@ public class Card {
     public Card() {
     }
 
-    public Card(String c_id, Uri imageUri, String card_logo, String u_id, String card_uname, String card_cname, String card_team, String card_rank, String card_pnum, String card_email, String card_caddr, int is_default) {
+    public Card(String c_id, String card_logo, String u_id, String card_uname, String card_cname, String card_team, String card_rank, String card_pnum, String card_email, String card_caddr, int is_default) {
         this.c_id = c_id;
-        this.imageUri = imageUri;
         this.card_logo = card_logo;
         this.u_id = u_id;
         this.card_uname = card_uname;
@@ -58,14 +57,6 @@ public class Card {
 
     public void setC_id(String c_id) {
         this.c_id = c_id;
-    }
-
-    public Uri getImageUri() {
-        return imageUri;
-    }
-
-    public void setImageUri(Uri imageUri) {
-        this.imageUri = imageUri;
     }
 
     public String getU_id() {

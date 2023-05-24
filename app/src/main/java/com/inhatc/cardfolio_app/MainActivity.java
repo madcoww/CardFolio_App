@@ -1,5 +1,6 @@
 package com.inhatc.cardfolio_app;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
@@ -67,12 +68,12 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        if(BottomNav.mn_idx == 0) {
-            toolbarName = "CardFolio";
-            getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-        }else{
+        if (BottomNav.mn_idx == 1) {
             toolbarName = "명함집";
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        } else {
+            toolbarName = "CardFolio";
+            getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         }
         getSupportActionBar().setTitle("");
 
@@ -112,11 +113,12 @@ public class MainActivity extends AppCompatActivity {
         myTabHost.addTab(myTabSpec);
         myTabSpec = myTabHost.newTabSpec("SearchCard").setIndicator("SearchCard").setContent(R.id.tab3); // 검색결과
         myTabHost.addTab(myTabSpec);
+
         if(BottomNav.mn_idx == 1) {
-            // HOME일때
+            // 명함집일때
             MainActivity.myTabHost.setCurrentTab(1);
         }else{
-            // 명함집일때
+            // HOME일때
             MainActivity.myTabHost.setCurrentTab(0);
         }
     }
@@ -162,7 +164,6 @@ public class MainActivity extends AppCompatActivity {
                     //String userId = userSnapshot.getKey();
                     Card card = new Card();
                     card.setC_id(userSnapshot.child("c_id").getValue(String.class));
-                    card.setImageUri(userSnapshot.child("imageUri").getValue(Uri.class));
                     card.setCard_logo(userSnapshot.child("card_logo").getValue(String.class));
                     card.setU_id(userSnapshot.child("u_id").getValue(String.class));
                     card.setCard_uname(userSnapshot.child("card_uname").getValue(String.class));
@@ -220,7 +221,6 @@ public class MainActivity extends AppCompatActivity {
                                 String userId = userSnapshot.getKey();
                                 Card card = new Card();
                                 card.setC_id(userSnapshot.child("c_id").getValue(String.class));
-                                card.setImageUri(userSnapshot.child("imageUri").getValue(Uri.class));
                                 card.setCard_logo(userSnapshot.child("card_logo").getValue(String.class));
                                 card.setU_id(userSnapshot.child("u_id").getValue(String.class));
                                 card.setCard_uname(userSnapshot.child("card_uname").getValue(String.class));
@@ -261,6 +261,9 @@ public class MainActivity extends AppCompatActivity {
     // 검색한 명함 로드
     public void searchOtherCard(Query query){
         searchArrayList = new ArrayList<>();
+        toolbarName = "검색결과";
+        TextView toolbarTitle = (TextView) findViewById(R.id.toolbar_title);
+        toolbarTitle.setText(toolbarName);
 
         query.addListenerForSingleValueEvent(new ValueEventListener() {
 
@@ -287,7 +290,6 @@ public class MainActivity extends AppCompatActivity {
                                 card_cname = userSnapshot.child("card_cname").getValue(String.class);
 
                                 card.setC_id(userSnapshot.child("c_id").getValue(String.class));
-                                card.setImageUri(userSnapshot.child("imageUri").getValue(Uri.class));
                                 card.setCard_logo(userSnapshot.child("card_logo").getValue(String.class));
                                 card.setU_id(userSnapshot.child("u_id").getValue(String.class));
                                 card.setCard_uname(card_uname);
@@ -351,13 +353,13 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    // 신귬명함 등록
     View.OnClickListener requestRegisterCard = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            // 시작하기
-            Intent intentRegisterCard = new Intent(MainActivity.this, RegisterCardActivity.class);
-            startActivity(intentRegisterCard);
+            Intent registerCard = new Intent(MainActivity.this, RegisterCardActivity.class);
+            registerCard.putExtra("intent_name", "RegisterCard");
+            startActivity(registerCard);
         }
     };
-
 }

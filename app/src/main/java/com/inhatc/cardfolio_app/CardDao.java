@@ -30,7 +30,7 @@ public class CardDao {
     public static CardDao getCardDao() {
         return cardDao;
     }
-    
+
     // 대표명함 설정
     public void is_default(String c_id){
         //u_id가 일치하는 모든 데이터를 읽어와서, c_id를 읽어와서

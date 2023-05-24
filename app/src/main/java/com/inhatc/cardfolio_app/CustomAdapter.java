@@ -5,6 +5,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -19,9 +20,18 @@ import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 
@@ -30,6 +40,9 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.CustomView
     private ArrayList<Card> mList;
     private String cardYype; // 내명함인지(my), 명함집인지(other)
     private Context context;
+    private FirebaseStorage storage = FirebaseStorage.getInstance(); //스토리지
+    private StorageReference storageRef = storage.getReference();
+    private StorageReference fileRef;
 
     public CustomAdapter(ArrayList<Card> list, Context context, String cardYype) {
         this.mList = list;
@@ -57,6 +70,24 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.CustomView
         viewholder.pnum.setText("T. " + mList.get(position).getCard_pnum());
         viewholder.email.setText("E-mail. " + mList.get(position).getCard_email());
         viewholder.c_id.setText(mList.get(position).getC_id());
+
+        load_logo(viewholder, position);
+    }
+
+    // 로고 가져오기
+    void load_logo(@NonNull CustomViewHolder viewholder, int position){
+        fileRef = storageRef.child("logo").child(mList.get(position).getCard_logo());
+
+        fileRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri) {
+                Glide.with(((Activity) context)).load(mList.get(position).getCard_logo()).into(viewholder.imageView);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+            }
+        });
     }
 
     public class CustomViewHolder extends RecyclerView.ViewHolder {
@@ -66,6 +97,7 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.CustomView
         protected ImageView logo_img, imageView;     // 로고, 메뉴 버튼
         protected TextView cname, team, rank, pnum, email;          // 이메일
         private PopupMenu popupMenu;
+        private DatabaseReference mDatabaseRef = FirebaseDatabase.getInstance().getReference("cardFolio");
 
         public CustomViewHolder(View view) {
             super(view);
@@ -120,10 +152,44 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.CustomView
                     }else if(item.getTitle().equals("대표명함 설정")){
                         Log.d("Menu:", "대표명함");
                         cardDao.is_default(c_id_val);
-                        ((Activity)context).recreate(); // 액티비티 새로코침
+                        Intent intent = new Intent(((Activity)context), MainActivity.class);
+                        ((Activity)context).startActivity(intent); // 액티비티 새로코침
+                        ((Activity)context).finish();
                         return true;
                     }else if(item.getTitle().equals("수정")){
-                        Log.d("Menu:", "수정");
+                        // 수정
+                        String cardId = c_id.getText().toString();
+                        Query query = mDatabaseRef.child("CardInfo").orderByChild("c_id").equalTo(cardId);
+                        query.addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                Card card = new Card();
+                                for(DataSnapshot userSnapshot : dataSnapshot.getChildren())
+                                {
+                                    card.setC_id(userSnapshot.child("c_id").getValue(String.class));
+                                    card.setCard_caddr(userSnapshot.child("card_caddr").getValue(String.class));
+                                    card.setCard_cname(userSnapshot.child("card_cname").getValue(String.class));
+                                    card.setCard_email(userSnapshot.child("card_email").getValue(String.class));
+                                    card.setCard_logo(userSnapshot.child("card_logo").getValue(String.class));
+                                    card.setCard_pnum(userSnapshot.child("card_pnum").getValue(String.class));
+                                    card.setCard_rank(userSnapshot.child("card_rank").getValue(String.class));
+                                    card.setCard_team(userSnapshot.child("card_team").getValue(String.class));
+                                    card.setCard_uname(userSnapshot.child("card_uname").getValue(String.class));
+                                    card.setIs_default(userSnapshot.child("is_default").getValue(Integer.class));
+                                    card.setU_id(userSnapshot.child("u_id").getValue(String.class));
+                                }
+
+                                Intent registerCardModifyIntent = new Intent(((Activity)context), RegisterCardActivity.class);
+                                registerCardModifyIntent.putExtra("intent_name", "ModifyCard");
+                                registerCardModifyIntent.putExtra("CardInfo", card); // "key"는 전달할 데이터의 식별자, value는 전달할 데이터
+                                ((Activity)context).startActivity(registerCardModifyIntent);
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
+
+                            }
+                        });
                         return true;
                     }else if(item.getTitle().equals("삭제")){
                         Log.d("Menu:", "삭제");
@@ -146,4 +212,5 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.CustomView
     public int getItemCount() {
         return (null != mList ? mList.size() : 0);
     }
+
 }

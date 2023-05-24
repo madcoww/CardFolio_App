@@ -115,9 +115,10 @@
                             android:clickable="true">
 
                             <ImageView
+                                android:id="@+id/fstBtnImg"
                                 android:layout_width="24dp"
                                 android:layout_height="24dp"
-                                android:background="@drawable/icon_check"
+                                android:background="@drawable/icon_phone"
                                 android:padding="@dimen/margin_sm"
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintEnd_toEndOf="parent"
@@ -126,6 +127,7 @@
                                 android:clickable="false" />
 
                             <TextView
+                                android:id="@+id/fstBtnTxt"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="4dp"

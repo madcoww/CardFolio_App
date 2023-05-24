@@ -41,10 +41,6 @@
         <activity android:name=".RegisterCardActivity"
             android:theme="@style/Theme.Diary.NoActionBar"/>
 
-        <activity
-            android:name=".ModifyCardActivity"
-            android:exported="false" />
-
         <activity android:name=".ViewCardActivity"
             android:theme="@style/Theme.Diary.NoActionBar"/>
 

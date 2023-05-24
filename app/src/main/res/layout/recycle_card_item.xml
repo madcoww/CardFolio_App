@@ -60,7 +60,7 @@
                 android:background="@drawable/box_top_card"
                 android:text="대표명함"
                 android:textColor="@color/white"
-                android:textSize="8sp"
+                android:textSize="@dimen/text_size_sm"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/imageView"

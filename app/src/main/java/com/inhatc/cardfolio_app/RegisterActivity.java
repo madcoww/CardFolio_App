@@ -90,22 +90,9 @@ public class RegisterActivity extends AppCompatActivity {
         btnisDuplicateId = findViewById(R.id.btn_register_id_chk);
         btn_register = findViewById(R.id.btn_register);
 
-
-        // 이메일 검사
-        uId.addTextChangedListener(uIdWatcher);
-        
-        // 패스워드 검사
-        uPw.addTextChangedListener(uPwWatcher);
-        uPwConfirm.addTextChangedListener(uPwConfirmWatcher);
-        
-        // 이름 검사
-        uName.addTextChangedListener(uNameWatcher);
-        
-        // 휴대폰 검사
-        uTel.addTextChangedListener(uTelWatcher);
-
         btn_register.setOnClickListener(registerEvent);
         btnisDuplicateId.setOnClickListener(registerIdCheck);
+
 
         toolbarName = "회원가입";
 
@@ -148,6 +135,20 @@ public class RegisterActivity extends AppCompatActivity {
         // 툴바 이름
         TextView toolbarTitle = (TextView) findViewById(R.id.toolbar_title);
         toolbarTitle.setText(toolbarName);
+
+
+        // 이메일 검사
+        uId.addTextChangedListener(uIdWatcher);
+
+        // 패스워드 검사
+        uPw.addTextChangedListener(uPwWatcher);
+        uPwConfirm.addTextChangedListener(uPwConfirmWatcher);
+
+        // 이름 검사
+        uName.addTextChangedListener(uNameWatcher);
+
+        // 휴대폰 검사
+        uTel.addTextChangedListener(uTelWatcher);
     }
 
     @Override
@@ -166,10 +167,7 @@ public class RegisterActivity extends AppCompatActivity {
         private Runnable runnable;
 
         @Override
-        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            // 타이핑 전에 호출되는 메소드
-        }
-
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
             // 타이핑 도중에 호출되는 메소드
@@ -191,20 +189,8 @@ public class RegisterActivity extends AppCompatActivity {
                 warning_email.setText("");
             }
         }
-
         @Override
-        public void afterTextChanged(final Editable s) {
-            // 타이핑 후에 호출되는 메소드
-            runnable = new Runnable() {
-                @Override
-                public void run() {
-                    // 타이핑 후에 호출되는 메소드
-                }
-            };
-
-            // 일정 시간이 지난 후에 검사 요청을 실행 (타이핑이 멈추면 실행)
-            handler.postDelayed(runnable, 500); // 500ms 후에 실행하도록 설정 (원하는 시간으로 변경 가능)
-        }
+        public void afterTextChanged(final Editable s) { }
     };
 
     // 중복확인 버튼
@@ -264,13 +250,9 @@ public class RegisterActivity extends AppCompatActivity {
         private Runnable runnable;
 
         @Override
-        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            // 타이핑 전에 호출되는 메소드
-        }
-
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
-            // 타이핑 도중에 호출되는 메소드
             handler.removeCallbacks(runnable); // 기존의 검사 요청이 있다면 제거
             String strData = uPw.getText().toString();
             if (isNewRegister) {
@@ -317,20 +299,8 @@ public class RegisterActivity extends AppCompatActivity {
                 }
             }
         }
-
         @Override
-        public void afterTextChanged(final Editable s) {
-            // 타이핑 후에 호출되는 메소드
-            runnable = new Runnable() {
-                @Override
-                public void run() {
-                    // 타이핑 후에 호출되는 메소드
-                }
-            };
-
-            // 일정 시간이 지난 후에 검사 요청을 실행 (타이핑이 멈추면 실행)
-            handler.postDelayed(runnable, 500); // 500ms 후에 실행하도록 설정 (원하는 시간으로 변경 가능)
-        }
+        public void afterTextChanged(final Editable s) { }
     };
 
     // 비밀번호 확인 검사
@@ -339,16 +309,12 @@ public class RegisterActivity extends AppCompatActivity {
         private Runnable runnable;
 
         @Override
-        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            // 타이핑 전에 호출되는 메소드
-        }
-
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
             String strData = uPw.getText().toString();
             String strDataConfirm = uPwConfirm.getText().toString();
             if (isNewRegister) {
-                // 신규가입
                 if (strData.length() < 6 || strData.length() > 16) {
                     warning_pw.setText("6자~16자의 영문/숫자 조합으로 입력해주세요.");
                     warning_pw.setTextColor(Color.RED);
@@ -363,20 +329,8 @@ public class RegisterActivity extends AppCompatActivity {
                 handler.removeCallbacks(runnable); // 기존의 검사 요청이 있다면 제거
             }
         }
-
         @Override
-        public void afterTextChanged(final Editable s) {
-            // 타이핑 후에 호출되는 메소드
-            runnable = new Runnable() {
-                @Override
-                public void run() {
-                    // 타이핑 후에 호출되는 메소드\
-                }
-            };
-
-            // 일정 시간이 지난 후에 검사 요청을 실행 (타이핑이 멈추면 실행)
-            handler.postDelayed(runnable, 500); // 500ms 후에 실행하도록 설정 (원하는 시간으로 변경 가능)
-        }
+        public void afterTextChanged(final Editable s) { }
     };
 
     // 이름 검사
@@ -385,16 +339,12 @@ public class RegisterActivity extends AppCompatActivity {
         private Runnable runnable;
 
         @Override
-        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            // 타이핑 전에 호출되는 메소드
-        }
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
 
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
-            // 타이핑 도중에 호출되는 메소드
             handler.removeCallbacks(runnable); // 기존의 검사 요청이 있다면 제거
             String strData = uName.getText().toString();
-            // 신규가입
             if(strData.isEmpty()){
                 warning_name.setText("이름을 입력해주세요.");
                 warning_name.setTextColor(Color.RED);
@@ -402,20 +352,8 @@ public class RegisterActivity extends AppCompatActivity {
                 warning_name.setText("");
             }
         }
-
         @Override
-        public void afterTextChanged(final Editable s) {
-            // 타이핑 후에 호출되는 메소드
-            runnable = new Runnable() {
-                @Override
-                public void run() {
-                    // 타이핑 후에 호출되는 메소드
-                }
-            };
-
-            // 일정 시간이 지난 후에 검사 요청을 실행 (타이핑이 멈추면 실행)
-            handler.postDelayed(runnable, 500); // 500ms 후에 실행하도록 설정 (원하는 시간으로 변경 가능)
-        }
+        public void afterTextChanged(final Editable s) { }
     };
 
     // 휴대폰 검사
@@ -424,10 +362,7 @@ public class RegisterActivity extends AppCompatActivity {
         private Runnable runnable;
 
         @Override
-        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            // 타이핑 전에 호출되는 메소드
-        }
-
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
             // 타이핑 도중에 호출되는 메소드
@@ -445,20 +380,8 @@ public class RegisterActivity extends AppCompatActivity {
                 warning_tel.setTextColor(Color.RED);
             }
         }
-
         @Override
-        public void afterTextChanged(final Editable s) {
-            // 타이핑 후에 호출되는 메소드
-            runnable = new Runnable() {
-                @Override
-                public void run() {
-                    // 타이핑 후에 호출되는 메소드
-                }
-            };
-
-            // 일정 시간이 지난 후에 검사 요청을 실행 (타이핑이 멈추면 실행)
-            handler.postDelayed(runnable, 500); // 500ms 후에 실행하도록 설정 (원하는 시간으로 변경 가능)
-        }
+        public void afterTextChanged(final Editable s) { }
     };
     
     // 완료 버튼

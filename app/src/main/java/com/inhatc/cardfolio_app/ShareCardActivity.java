@@ -124,7 +124,7 @@ public class ShareCardActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 Card share_data = snapshot.getValue(Card.class);
 
-                share_strImgUri = share_data.getCard_logo();
+                share_strImgUri = share_data.getCard_logo().toString();
                 load_logo();
 
                 share_uname = share_data.getCard_uname();

@@ -6,6 +6,7 @@ package com.inhatc.cardfolio_app;
  * 개정 이력 : 김원준, 2023-05-22
  * MainActivity putExtra(card_id) - > ViewCardActivity getExtra(card_id), putExtra(card_id) -> share
  * */
+import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
@@ -49,19 +50,24 @@ public class ViewCardActivity extends AppCompatActivity {
     private BottomNavigationView bottomNavigationView;
     BottomNav bottomNav;
 
+
     private FirebaseAuth mFirebaseAuth;                    // 인증
     private DatabaseReference mDatabaseRef;                // DB
+    private FirebaseUser firebaseUser;
 
     FirebaseStorage storage = FirebaseStorage.getInstance(); //스토리지 (정보 삭제 시 필요)
 
     private String card_id; // getExtra() 가져올 현재 카드 id 값
-    private ImageView c_logo;
-    private TextView c_uname, c_cname, c_team_rank, c_pnum, c_email, c_addr;
+    private ImageView c_logo, fstBtnImg;
+    private TextView c_uname, c_cname, c_team_rank, c_pnum, c_email, c_addr, fstBtnTxt;
 
     private String  card_uname, card_cname, card_team, card_rank, card_pnum, card_email, card_caddr;
+    private static String card_uid;
     private LinearLayout ll_call, ll_share, ll_update, ll_delete;
 
     private String strImgUri;
+    private Card card_data;
+    private boolean isMine;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,6 +92,7 @@ public class ViewCardActivity extends AppCompatActivity {
         // 파이어베이스
         mFirebaseAuth = FirebaseAuth.getInstance();
         mDatabaseRef  = FirebaseDatabase.getInstance().getReference("cardFolio");
+        firebaseUser = mFirebaseAuth.getCurrentUser(); // 로그인한 사용자 정보 읽기
 
         Intent intent = getIntent();
         card_id = intent.getStringExtra("c_id");
@@ -110,6 +117,19 @@ public class ViewCardActivity extends AppCompatActivity {
         ll_share.setOnClickListener(btn_event);
         ll_update.setOnClickListener(btn_event);
         ll_delete.setOnClickListener(btn_event);
+
+
+        firebaseUser = mFirebaseAuth.getCurrentUser(); // 로그인한 사용자 정보 읽기
+        //if(card_uid.equals(firebaseUser.getUid())){
+        if(isMine){
+            isMine = true;
+        }else{
+            isMine = true;
+            fstBtnImg = (ImageView) findViewById(R.id.fstBtnImg);
+            fstBtnTxt = (TextView) findViewById(R.id.fstBtnTxt);
+            fstBtnTxt.setText("대표명함");
+            fstBtnImg.setBackgroundResource(R.drawable.icon_check);
+        }
     }
     View.OnClickListener btn_event = new View.OnClickListener() {
         @Override
@@ -117,9 +137,15 @@ public class ViewCardActivity extends AppCompatActivity {
             switch (view.getId()){
                 // 전화 OnClickListener
                 case R.id.btn_call:
-                    Intent dialIntent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:"+c_pnum.getText()));
-                    dialIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    startActivity(dialIntent);
+                    if(isMine){
+                        is_default(card_id);
+                        Toast.makeText(ViewCardActivity.this, "대표명함 설정이 완료되었습니다.", Toast.LENGTH_SHORT).show();
+                    }
+                    else {
+                        Intent dialIntent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + c_pnum.getText()));
+                        dialIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(dialIntent);
+                    }
                     break;
                 case R.id.btn_share:
                     Intent shareIntent = new Intent(ViewCardActivity.this, ShareCardActivity.class);
@@ -127,7 +153,8 @@ public class ViewCardActivity extends AppCompatActivity {
                     startActivity(shareIntent);
                     break;
                 case R.id.btn_update:
-                    Intent modifyIntent = new Intent(ViewCardActivity.this, ModifyCardActivity.class);
+                    Intent modifyIntent = new Intent(ViewCardActivity.this, RegisterCardActivity.class);
+                    modifyIntent.putExtra("intent_name", "ModifyCard");
                     modifyIntent.putExtra("c_id", card_id); // "key"는 전달할 데이터의 식별자, value는 전달할 데이터
                     startActivity(modifyIntent);
                     break;
@@ -137,6 +164,51 @@ public class ViewCardActivity extends AppCompatActivity {
             }
         }
     };
+    private ArrayList<Card> otherArrayList;
+    public void is_default(String c_id){
+        //u_id가 일치하는 모든 데이터를 읽어와서, c_id를 읽어와서
+        otherArrayList = new ArrayList<>();
+        // 로그인한 사용자 명함집 읽기
+        FirebaseUser firebaseUser = mFirebaseAuth.getCurrentUser();
+        String u_id = firebaseUser.getUid();
+        Query query = mDatabaseRef.child("OtherCards").orderByChild("u_id").equalTo(firebaseUser.getUid());
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if(dataSnapshot != null){
+                    for (DataSnapshot userSnapshot : dataSnapshot.getChildren()) {
+                        String cId = userSnapshot.child("c_id").getValue(String.class);
+
+                        // CardInfo에서 일치하는 c_id의 데이터를 찾아 읽어온다.
+                        Query query3 = mDatabaseRef.child("CardInfo").orderByChild("u_id").equalTo(u_id);
+                        query3.addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                for (DataSnapshot userSnapshot : dataSnapshot.getChildren()) {
+                                    if(userSnapshot.child("c_id").getValue(String.class).equals(c_id)) {
+                                        mDatabaseRef.child("CardInfo").child(userSnapshot.child("c_id").getValue(String.class)).child("is_default").setValue(1);
+                                        Log.d("명항설정O", "1" + u_id + "+" + userSnapshot.child("c_id").getValue(String.class));
+                                    }else{
+                                        mDatabaseRef.child("CardInfo").child(userSnapshot.child("c_id").getValue(String.class)).child("is_default").setValue(0);
+                                        Log.d("명항설정X", "0"  + u_id + "+" + userSnapshot.child("c_id").getValue(String.class));
+                                    }
+                                }
+                            }
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
+                                // 쿼리가 취소되었거나 실패한 경우에 대한 처리
+                            }
+                        });
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+            }
+        });
+        //is_default를 0으로 바꿈, 읽어온 c_id와 파라미터 c_id가 일치할 경우 1로 바꿈
+    }
     @Override
     protected void onStart() {
         super.onStart();
@@ -161,11 +233,12 @@ public class ViewCardActivity extends AppCompatActivity {
         mDatabaseRef.child("CardInfo").child(card_id).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                Card card_data = snapshot.getValue(Card.class);
+                card_data = snapshot.getValue(Card.class);
 
-                strImgUri = card_data.getCard_logo();
+                strImgUri = card_data.getCard_logo().toString();
                 load_logo();
 
+                card_uid = card_data.getU_id();
                 card_uname = card_data.getCard_uname();
                 card_cname = card_data.getCard_cname();
                 card_team = card_data.getCard_team();
@@ -231,5 +304,13 @@ public class ViewCardActivity extends AppCompatActivity {
                 Toast.makeText(ViewCardActivity.this, "이미지 불러 오기 실패했습니다..", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        Intent intent = new Intent(ViewCardActivity.this, MainActivity.class);
+        startActivity(intent); // 액티비티 새로코침
+        finish();
     }
 }

@@ -64,7 +64,6 @@
                         android:layout_gravity="center"
                         android:layout_marginVertical="@dimen/margin_sm"
                         android:background="@drawable/edittext_left_background"
-                        android:hint="@string/app_logo"
                         android:singleLine="true"
                         android:textColor="@color/black"
                         android:textColorHint="@color/hint"
@@ -136,6 +135,17 @@
                     android:textColorHint="@color/hint"
                     android:inputType="text"/>
 
+                <TextView
+                    android:id="@+id/warning_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/margin_sm"
+                    android:layout_marginBottom="@dimen/margin_sm"
+                    android:gravity="left"
+                    android:text=""
+                    android:textColor="@color/gray"
+                    android:textSize="@dimen/text_size_xs" />
+
 
                 <!-- 회사이름 -->
                 <LinearLayout
@@ -146,7 +156,6 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/margin_md"
                         android:layout_marginBottom="@dimen/margin_sm"
                         android:text="@string/app_company"
                         android:textColor="@color/black"
@@ -155,7 +164,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/margin_sm"
-                        android:layout_marginTop="@dimen/margin_md"
                         android:layout_marginBottom="@dimen/margin_sm"
                         android:text="*"
                         android:textColor="@color/black"
@@ -176,6 +184,17 @@
                     android:textColorHint="@color/hint"
                     android:inputType="text"/>
 
+                <TextView
+                    android:id="@+id/warning_cname"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/margin_sm"
+                    android:layout_marginBottom="@dimen/margin_sm"
+                    android:gravity="left"
+                    android:text=""
+                    android:textColor="@color/gray"
+                    android:textSize="@dimen/text_size_xs" />
+
 
                 <!-- 소속팀 / 직급 -->
                 <LinearLayout
@@ -186,7 +205,6 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/margin_md"
                         android:layout_marginBottom="@dimen/margin_sm"
                         android:text="소속팀 / 직급"
                         android:textColor="@color/black"
@@ -195,7 +213,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/margin_sm"
-                        android:layout_marginTop="@dimen/margin_md"
                         android:layout_marginBottom="@dimen/margin_sm"
                         android:text="*"
                         android:textColor="@color/black"
@@ -239,6 +256,17 @@
                         android:inputType="text"/>
                 </LinearLayout>
 
+                <TextView
+                    android:id="@+id/warning_cinfo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/margin_sm"
+                    android:layout_marginBottom="@dimen/margin_sm"
+                    android:gravity="left"
+                    android:text=""
+                    android:textColor="@color/gray"
+                    android:textSize="@dimen/text_size_xs" />
+
                 <!-- 휴대폰 -->
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -248,7 +276,6 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/margin_md"
                         android:layout_marginBottom="@dimen/margin_sm"
                         android:text="@string/app_tel"
                         android:textColor="@color/black"
@@ -257,7 +284,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/margin_sm"
-                        android:layout_marginTop="@dimen/margin_md"
                         android:layout_marginBottom="@dimen/margin_sm"
                         android:text="*"
                         android:textColor="@color/black"
@@ -278,6 +304,17 @@
                     android:textColorHint="@color/hint"
                     android:inputType="numberDecimal"/>
 
+                <TextView
+                    android:id="@+id/warning_pnum"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/margin_sm"
+                    android:layout_marginBottom="@dimen/margin_sm"
+                    android:gravity="left"
+                    android:text=""
+                    android:textColor="@color/gray"
+                    android:textSize="@dimen/text_size_xs" />
+
                 <!-- 이메일 -->
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -287,7 +324,6 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/margin_md"
                         android:layout_marginBottom="@dimen/margin_sm"
                         android:text="@string/app_email"
                         android:textColor="@color/black"
@@ -296,7 +332,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/margin_sm"
-                        android:layout_marginTop="@dimen/margin_md"
                         android:layout_marginBottom="@dimen/margin_sm"
                         android:text="*"
                         android:textColor="@color/black"
@@ -317,6 +352,17 @@
                     android:textColor="@color/black"
                     android:textColorHint="@color/hint" />
 
+                <TextView
+                    android:id="@+id/warning_email"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/margin_sm"
+                    android:layout_marginBottom="@dimen/margin_sm"
+                    android:gravity="left"
+                    android:text=""
+                    android:textColor="@color/gray"
+                    android:textSize="@dimen/text_size_xs" />
+
                 <!-- 주소 -->
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -326,7 +372,6 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/margin_md"
                         android:layout_marginBottom="@dimen/margin_sm"
                         android:text="@string/app_addr"
                         android:textColor="@color/black"
@@ -335,7 +380,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/margin_sm"
-                        android:layout_marginTop="@dimen/margin_md"
                         android:layout_marginBottom="@dimen/margin_sm"
                         android:text="*"
                         android:textColor="@color/black"
@@ -356,6 +400,17 @@
                     android:textColorHint="@color/hint"
                     android:inputType="text"/>
 
+                <TextView
+                    android:id="@+id/warning_addr"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/margin_sm"
+                    android:layout_marginBottom="@dimen/margin_sm"
+                    android:gravity="left"
+                    android:text=""
+                    android:textColor="@color/gray"
+                    android:textSize="@dimen/text_size_xs" />
+
                 <!-- 대표명함 설정 여부 -->
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -365,7 +420,6 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/margin_md"
                         android:layout_marginBottom="@dimen/margin_sm"
                         android:text="대표명함 설정"
                         android:textColor="@color/black"
@@ -374,7 +428,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/margin_sm"
-                        android:layout_marginTop="@dimen/margin_md"
                         android:layout_marginBottom="@dimen/margin_sm"
                         android:text="*"
                         android:textColor="@color/black"
@@ -399,6 +452,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginRight="@dimen/margin_md"
+                            android:checked="true"
                             android:text="예" />
 
                         <RadioButton

@@ -13,6 +13,7 @@
     <string name="app_addr">주소</string>
     <string name="app_register">회원가입</string>
     <string name="app_add_card">명함등록 완료</string>
+    <string name="app_modify_card">명함수정 완료</string>
     <string name="app_register_done">회원가입 완료</string>
     <string name="app_logo">로고</string>
     <string name="app_upload">업로드</string>

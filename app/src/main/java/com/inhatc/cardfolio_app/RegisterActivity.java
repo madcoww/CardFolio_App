@@ -79,7 +79,7 @@ public class RegisterActivity extends AppCompatActivity {
         uPw = findViewById(R.id.edt_register_pw);
         uPwConfirm = findViewById(R.id.edt_register_pw2);
         uName = findViewById(R.id.edt_register_name);
-        uTel = findViewById(R.id.edt_register_tel);
+        uTel = findViewById(R.id.edt_register_pnum);
         warning_email = findViewById(R.id.warning_email);
         warning_pw = findViewById(R.id.warning_pw);
         warning_pw2 = findViewById(R.id.warning_pw2);

@@ -164,7 +164,7 @@
                 </LinearLayout>
 
                 <EditText
-                    android:id="@+id/edt_register_company"
+                    android:id="@+id/edt_register_cname"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/btn_height"
                     android:layout_gravity="center"
@@ -266,7 +266,7 @@
                 </LinearLayout>
 
                 <EditText
-                    android:id="@+id/edt_register_tel"
+                    android:id="@+id/edt_register_pnum"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/btn_height"
                     android:layout_gravity="center"

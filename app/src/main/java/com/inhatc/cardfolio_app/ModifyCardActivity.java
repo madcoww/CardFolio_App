@@ -1,27 +1,10 @@
 package com.inhatc.cardfolio_app;
-
 /*
  * 최초 작성자 : 김원준
- * 최초 작성일 : 2023-05-18
+ * 최초 작성일 : 2023-05-24
  * 목적 : 카드 등록
  * 개정 이력 : 김원준, 2023-05-24
  * */
-
-import android.content.ContentResolver;
-import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.net.Uri;
-import android.os.Bundle;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
-import android.widget.TextView;
-import android.widget.Toast;
-
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
@@ -30,23 +13,33 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import android.content.Intent;
+import android.net.Uri;
+import android.os.Bundle;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.TextView;
+import android.widget.Toast;
+
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
-import java.io.InputStream;
-import java.util.Random;
+public class ModifyCardActivity extends AppCompatActivity {
 
-
-public class RegisterCardActivity extends AppCompatActivity {
-    private final String toolbarName = "신규 명함등록";
+    private final String toolbarName = "명함 수정";
     private BottomNavigationView bottomNavigationView;
     BottomNav bottomNav;
 
@@ -58,27 +51,30 @@ public class RegisterCardActivity extends AppCompatActivity {
 
     private String c_user; //현재 접속한 유저
 
-    private EditText cLogo, cName, cCname, cDept, cPos, cPnum, cEmail, cCaddr;
+    private String card_id;
+
+    private EditText mLogo, mName, mCname, mDept, mPos, mPnum, mEmail, mAddr;
+
+    private String modify_strImgUri, modify_uname, modify_cname, modify_team, modify_rank, modify_pnum, modify_email, modify_addr;
 
     private RadioButton r_btn1, r_btn2;
     private RadioGroup rdg1;
 
+    private String basic_Uri;
+
     private int is_default; // 1 : 대표 명함
 
     private Uri imageUri;
-    private String basic_Uri;
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register_card);
 
-        // 툴바 생성
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle("");
+        //툴바 생성
+//        Toolbar toolbar1 = (Toolbar) findViewById(R.id.toolbar);
+//        setSupportActionBar(toolbar1);
+//        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+//        getSupportActionBar().setTitle("");
 
         // 툴바 이름
         TextView toolbarTitle = (TextView) findViewById(R.id.toolbar_title);
@@ -91,24 +87,27 @@ public class RegisterCardActivity extends AppCompatActivity {
         //현재 접속한 사용자 정보 가져오기
         c_user = mFirebaseAuth.getCurrentUser().getUid();
 
-        cLogo = (EditText) findViewById(R.id.edt_register_logo);
-        cName = (EditText) findViewById(R.id.edt_register_name);
-        cCname = (EditText) findViewById(R.id.edt_register_cname);
-        cDept = (EditText) findViewById(R.id.edt_register_team);
-        cPos = (EditText) findViewById(R.id.edt_register_rank);
-        cPnum = (EditText) findViewById(R.id.edt_register_pnum);
-        cEmail = (EditText) findViewById(R.id.edt_register_email);
-        cCaddr = (EditText) findViewById(R.id.edt_register_addr);
+        Intent intent = getIntent();
+        card_id = intent.getStringExtra("c_id");
+
+        load_data(card_id);
+
+        mLogo = (EditText) findViewById(R.id.edt_register_logo);
+        mName = (EditText) findViewById(R.id.edt_register_name);
+        mCname = (EditText) findViewById(R.id.edt_register_cname);
+        mDept = (EditText) findViewById(R.id.edt_register_team);
+        mPos = (EditText) findViewById(R.id.edt_register_rank);
+        mPnum = (EditText) findViewById(R.id.edt_register_pnum);
+        mEmail = (EditText) findViewById(R.id.edt_register_email);
+        mAddr = (EditText) findViewById(R.id.edt_register_addr);
 
         r_btn1 = (RadioButton)findViewById(R.id.radioButton);
         r_btn2 = (RadioButton)findViewById(R.id.radioButton2);
         rdg1 = (RadioGroup)findViewById(R.id.rdg1);
 
         findViewById(R.id.btn_register_logo_upload).setOnClickListener(logo_Upload);
-        findViewById(R.id.btn_register).setOnClickListener(card_Register);
+        findViewById(R.id.btn_register).setOnClickListener(card_Modify);
 
-
-        //라디오 버튼을 통해 대표 명함 설정 여부 받기
         rdg1.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup radioGroup, int i) {
@@ -123,17 +122,6 @@ public class RegisterCardActivity extends AppCompatActivity {
             }
         });
     }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()){
-            case android.R.id.home:
-                finish();
-                return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-    //이미지 업로드 버튼
     View.OnClickListener logo_Upload = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
@@ -145,7 +133,7 @@ public class RegisterCardActivity extends AppCompatActivity {
     };
 
     //명함 등록
-    View.OnClickListener card_Register = new View.OnClickListener() {
+    View.OnClickListener card_Modify = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
             //스토리지 업로드
@@ -153,30 +141,12 @@ public class RegisterCardActivity extends AppCompatActivity {
             //RDB 업로드
             uploadToRDB();
             //MainActivity 이동
-            Intent intent = new Intent(RegisterCardActivity.this, MainActivity.class);
+            Intent intent = new Intent(ModifyCardActivity.this, MainActivity.class);
             startActivity(intent);
             finish(); // 현재 액티비티 종료
         }
     };
 
-    //랜덤 코드 생성
-    private static String generateRandomCode() {
-        int codeLength = 6; // 회원 코드 길이
-        String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-
-        Random random = new Random();
-        StringBuilder codeBuilder = new StringBuilder();
-
-        for (int i = 0; i < codeLength; i++) {
-            int randomIndex = random.nextInt(characters.length());
-            char randomChar = characters.charAt(randomIndex);
-            codeBuilder.append(randomChar);
-        }
-
-        return codeBuilder.toString();
-    }
-
-    //logo image URI
     ActivityResultLauncher<Intent> activityResult = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
             new ActivityResultCallback<ActivityResult>() {
@@ -188,41 +158,73 @@ public class RegisterCardActivity extends AppCompatActivity {
 
                             String strData = imageUri.toString();
 
-                            cLogo.setText(strData);
+                            mLogo.setText(strData);
                         }
                     }
                 }
             }
     );
-    //firebase storage logo image 업로드
+    //firebase storage logo image 업로드 168-172 24일 수정
     private void uploadToStorage(){
-
         StorageReference storageRef = storage.getReference();
         StorageReference fileRef = storageRef.child("logo").child(imageUri.toString());
 
         fileRef.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                Toast.makeText(RegisterCardActivity.this, "업로드 성공", Toast.LENGTH_SHORT).show();
+                Toast.makeText(ModifyCardActivity.this, "업로드 성공", Toast.LENGTH_SHORT).show();
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                Toast.makeText(RegisterCardActivity.this, "업로드 실패", Toast.LENGTH_SHORT).show();
+                Toast.makeText(ModifyCardActivity.this, "업로드 실패", Toast.LENGTH_SHORT).show();
             }
         });
     }
-    //firebase RDB upload
+    // 카드 정보 수정
+    void load_data(String card_id){
+        mDatabaseRef.child("CardInfo").child(card_id).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                Card modify_data = snapshot.getValue(Card.class);
+
+                modify_strImgUri = modify_data.getCard_logo();
+
+                modify_uname = modify_data.getCard_uname();
+                modify_cname = modify_data.getCard_cname();
+                modify_team = modify_data.getCard_team();
+                modify_rank = modify_data.getCard_rank();
+                modify_pnum = modify_data.getCard_pnum();
+                modify_email = modify_data.getCard_email();
+                modify_addr = modify_data.getCard_caddr();
+
+                mLogo.setText(modify_strImgUri);
+                mName.setText(modify_uname);
+                mCname.setText(modify_cname);
+                mDept.setText(modify_team);
+                mPos.setText(modify_rank);
+                mPnum.setText(modify_pnum);
+                mEmail.setText(modify_email);
+                mAddr.setText(modify_addr);
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(ModifyCardActivity.this, "정보를 불러 오지 못했습니다..", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    //수정 정보 업로드
     void uploadToRDB(){
-        String card_id = generateRandomCode();
-        String i_Logo = cLogo.getText().toString();
-        String i_Name = cName.getText().toString();
-        String i_Cname = cCname.getText().toString();
-        String i_Team = cDept.getText().toString();
-        String i_Rank = cPos.getText().toString();
-        String i_Pnum = cPnum.getText().toString();
-        String i_Email = cEmail.getText().toString();
-        String i_Addr = cCaddr.getText().toString();
+
+        String i_Logo = mLogo.getText().toString();
+        String i_Name = mName.getText().toString();
+        String i_Cname = mCname.getText().toString();
+        String i_Team = mDept.getText().toString();
+        String i_Rank = mPos.getText().toString();
+        String i_Pnum = mPnum.getText().toString();
+        String i_Email = mEmail.getText().toString();
+        String i_Addr = mAddr.getText().toString();
         int i_is_default = is_default;
 
         Card cData = new Card();
@@ -238,14 +240,16 @@ public class RegisterCardActivity extends AppCompatActivity {
         cData.setCard_caddr(i_Addr);
         cData.setIs_default(i_is_default);
 
-        mDatabaseRef.child("CardInfo").child(card_id).setValue(cData);
-        uploadToRDB_rel(c_user, card_id);
+        mDatabaseRef.child("CardInfo").child(card_id).setValue(cData); //수정으로 교체
     }
-    //OtherCards 등록 다른 사람 명함을 등록(스캔 후) 동작이 좋을 것으로 사료
-    void uploadToRDB_rel(String user, String id){
-        CardRel rData = new CardRel();
-        rData.setU_id(user);
-        rData.setC_id(id);
-        mDatabaseRef.child("OtherCards").child(id).setValue(rData);
+
+
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case android.R.id.home:
+                finish();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

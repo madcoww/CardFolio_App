@@ -127,8 +127,9 @@ public class ViewCardActivity extends AppCompatActivity {
                     startActivity(shareIntent);
                     break;
                 case R.id.btn_update:
-
-
+                    Intent modifyIntent = new Intent(ViewCardActivity.this, ModifyCardActivity.class);
+                    modifyIntent.putExtra("c_id", card_id); // "key"는 전달할 데이터의 식별자, value는 전달할 데이터
+                    startActivity(modifyIntent);
                     break;
                 case R.id.btn_delete:
                     showDialog();

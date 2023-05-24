@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "322353728525",
+    "project_id": "card-folio-8ca8b",
+    "storage_bucket": "card-folio-8ca8b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:322353728525:android:883126e6ec9769aa379944",
+        "android_client_info": {
+          "package_name": "com.inhatc.cardfolio_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "322353728525-787e34soodh4meegih7giem39s6osa58.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBkXuPhJ_8ikQ3IWOd5jOOd7YvBj4h0RDU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "322353728525-787e34soodh4meegih7giem39s6osa58.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

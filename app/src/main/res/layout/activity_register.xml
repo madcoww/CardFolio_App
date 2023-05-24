@@ -1,0 +1,304 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".RegisterActivity">
+
+    <!-- AppBarLayout -->
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <include layout="@layout/toolbar"/>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:paddingBottom="@dimen/btn_float_height"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        app:layout_constraintBottom_toTopOf="@id/btn_register">
+
+        <ScrollView
+            android:id="@+id/pageScroll"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingLeft="@dimen/margin_md"
+                android:paddingRight="@dimen/margin_md"
+                android:paddingTop="@dimen/margin_md"
+                android:orientation="vertical">
+
+
+                <!-- 아이디 -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/margin_sm"
+                        android:text="@string/app_email"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/text_size_md" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/margin_sm"
+                        android:layout_marginBottom="@dimen/margin_sm"
+                        android:text="*"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/text_size_md" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <EditText
+                        android:id="@+id/edt_register_id"
+                        android:layout_width="0dp"
+                        android:layout_weight="2"
+                        android:layout_height="@dimen/btn_height"
+                        android:layout_gravity="center"
+                        android:layout_marginVertical="@dimen/margin_sm"
+                        android:background="@drawable/edittext_left_background"
+                        android:hint="@string/app_email"
+                        android:singleLine="true"
+                        android:textColor="@color/black"
+                        android:textColorHint="@color/hint"
+                        android:inputType="textEmailAddress"/>
+
+
+                    <android.widget.Button
+                        android:id="@+id/btn_register_id_chk"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="@dimen/btn_height"
+                        android:layout_gravity="center"
+                        android:layout_marginVertical="@dimen/margin_sm"
+                        android:background="@drawable/button_right_background"
+                        android:text="@string/app_id_chk"
+                        android:singleLine="true"
+                        android:textColor="@color/white"/>
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/warning_email"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/margin_sm"
+                    android:layout_marginBottom="@dimen/margin_sm"
+                    android:gravity="left"
+                    android:text=""
+                    android:textColor="@color/gray"
+                    android:textSize="@dimen/text_size_xs" />
+
+                <!-- 비밀번호 -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/margin_md"
+                        android:layout_marginBottom="@dimen/margin_sm"
+                        android:text="@string/app_pw"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/text_size_md" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/margin_sm"
+                        android:layout_marginTop="@dimen/margin_md"
+                        android:layout_marginBottom="@dimen/margin_sm"
+                        android:text="*"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/text_size_md" />
+
+                </LinearLayout>
+
+                <EditText
+                    android:id="@+id/edt_register_pw"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/btn_height"
+                    android:layout_gravity="center"
+                    android:layout_marginVertical="@dimen/margin_sm"
+                    android:layout_marginBottom="@dimen/margin_md"
+                    android:background="@drawable/edittext_background"
+                    android:hint="@string/app_pw"
+                    android:maxLength="16"
+                    android:singleLine="true"
+                    android:textColor="@color/black"
+                    android:textColorHint="@color/hint"
+                    android:inputType="textPassword"/>
+                <TextView
+                    android:id="@+id/warning_pw2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/margin_sm"
+                    android:layout_marginBottom="@dimen/margin_sm"
+                    android:gravity="left"
+                    android:text="6자~16자의 영문/숫자 조합으로 입력가능합니다."
+                    android:textColor="@color/gray"
+                    android:textSize="@dimen/text_size_xs" />
+
+                <EditText
+                    android:id="@+id/edt_register_pw2"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/btn_height"
+                    android:layout_gravity="center"
+                    android:layout_marginVertical="@dimen/margin_sm"
+                    android:layout_marginBottom="@dimen/margin_md"
+                    android:background="@drawable/edittext_background"
+                    android:hint="@string/app_pw2"
+                    android:maxLength="16"
+                    android:singleLine="true"
+                    android:textColor="@color/black"
+                    android:textColorHint="@color/hint"
+                    android:inputType="textPassword" />
+
+                <TextView
+                    android:id="@+id/warning_pw"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/margin_sm"
+                    android:layout_marginBottom="@dimen/margin_sm"
+                    android:gravity="left"
+                    android:text=""
+                    android:textColor="@color/gray"
+                    android:textSize="@dimen/text_size_xs" />
+
+
+                <!-- 이름 -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/margin_md"
+                        android:layout_marginBottom="@dimen/margin_sm"
+                        android:text="@string/app_uname"
+                        android:maxLength="50"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/text_size_md" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/margin_sm"
+                        android:layout_marginTop="@dimen/margin_md"
+                        android:layout_marginBottom="@dimen/margin_sm"
+                        android:text="*"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/text_size_md" />
+
+                </LinearLayout>
+
+                <EditText
+                    android:id="@+id/edt_register_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/btn_height"
+                    android:layout_gravity="center"
+                    android:layout_marginVertical="@dimen/margin_sm"
+                    android:background="@drawable/edittext_background"
+                    android:hint="@string/app_uname"
+                    android:maxLength="50"
+                    android:singleLine="true"
+                    android:textColor="@color/black"
+                    android:textColorHint="@color/hint"
+                    android:inputType="text"/>
+
+                <TextView
+                    android:id="@+id/warning_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/margin_sm"
+                    android:layout_marginBottom="@dimen/margin_sm"
+                    android:gravity="left"
+                    android:text=""
+                    android:textColor="@color/gray"
+                    android:textSize="@dimen/text_size_xs" />
+
+                <!-- 휴대폰 -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/margin_sm"
+                        android:text="@string/app_tel"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/text_size_md" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/margin_sm"
+                        android:layout_marginBottom="@dimen/margin_sm"
+                        android:text="*"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/text_size_md" />
+
+                </LinearLayout>
+
+                <EditText
+                    android:id="@+id/edt_register_tel"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/btn_height"
+                    android:layout_gravity="center"
+                    android:layout_marginVertical="@dimen/margin_sm"
+                    android:background="@drawable/edittext_background"
+                    android:hint="'-'를 제외한 숫자만 입력"
+                    android:maxLength="11"
+                    android:singleLine="true"
+                    android:textColor="@color/black"
+                    android:textColorHint="@color/hint"
+                    android:inputType="numberDecimal"/>
+
+                <TextView
+                    android:id="@+id/warning_tel"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/margin_sm"
+                    android:layout_marginBottom="@dimen/margin_sm"
+                    android:gravity="left"
+                    android:text=""
+                    android:textColor="@color/gray"
+                    android:textSize="@dimen/text_size_xs" />
+
+            </LinearLayout>
+        </ScrollView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    <android.widget.Button
+        android:id="@+id/btn_register"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/btn_float_height"
+        android:text="@string/app_register_done"
+        android:background="@drawable/button_solid_background"
+        android:textColor="@color/white"
+        android:textSize="@dimen/text_size_md"
+        android:textStyle="bold"
+        app:layout_anchor="@id/content"
+        app:layout_anchorGravity="bottom"/>
+
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/main_btn_menu1"
+        android:enabled="true"
+        android:drawableEnd="@drawable/icon_arr_right"
+        android:title="공유하기" />
+    <item
+        android:id="@+id/main_btn_menu2"
+        android:enabled="true"
+        android:drawableEnd="@drawable/icon_arr_right"
+        android:title="상세보기" />
+    <item
+        android:id="@+id/main_btn_menu3"
+        android:enabled="true"
+        android:drawableEnd="@drawable/icon_arr_right"
+        android:title="대표명함 설정" />
+    <item
+        android:id="@+id/main_btn_menu4"
+        android:enabled="true"
+        android:drawableEnd="@drawable/icon_arr_right"
+        android:title="삭제" />
+    <item
+        android:id="@+id/main_btn_menu5"
+        android:enabled="true"
+        android:drawableEnd="@drawable/icon_arr_right"
+        android:title="수정" />
+</menu>

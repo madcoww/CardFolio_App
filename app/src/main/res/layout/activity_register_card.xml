@@ -1,0 +1,432 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".RegisterCardActivity">
+
+    <!-- AppBarLayout -->
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <include layout="@layout/toolbar"/>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:paddingBottom="@dimen/btn_float_height"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        app:layout_constraintBottom_toTopOf="@id/btn_register">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingLeft="@dimen/margin_md"
+                android:paddingRight="@dimen/margin_md"
+                android:paddingTop="@dimen/margin_md"
+                android:orientation="vertical">
+
+
+                <!-- 아이디 -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/margin_sm"
+                        android:text="@string/app_logo"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/text_size_md" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <EditText
+                        android:id="@+id/edt_register_logo"
+                        android:layout_width="0dp"
+                        android:layout_weight="2"
+                        android:layout_height="@dimen/btn_height"
+                        android:layout_gravity="center"
+                        android:layout_marginVertical="@dimen/margin_sm"
+                        android:background="@drawable/edittext_left_background"
+                        android:hint="@string/app_logo"
+                        android:singleLine="true"
+                        android:textColor="@color/black"
+                        android:textColorHint="@color/hint"
+                        android:inputType="textEmailAddress"/>
+
+
+                    <android.widget.Button
+                        android:id="@+id/btn_register_logo_upload"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="@dimen/btn_height"
+                        android:layout_gravity="center"
+                        android:layout_marginVertical="@dimen/margin_sm"
+                        android:background="@drawable/button_right_background"
+                        android:text="@string/app_upload"
+                        android:singleLine="true"
+                        android:textColor="@color/white"/>
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/warning_logo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/margin_sm"
+                    android:layout_marginBottom="@dimen/margin_sm"
+                    android:gravity="left"
+                    android:text=""
+                    android:textColor="@color/gray"
+                    android:textSize="@dimen/text_size_xs" />
+
+
+
+                <!-- 이름 -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/margin_md"
+                        android:layout_marginBottom="@dimen/margin_sm"
+                        android:text="@string/app_uname"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/text_size_md" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/margin_sm"
+                        android:layout_marginTop="@dimen/margin_md"
+                        android:layout_marginBottom="@dimen/margin_sm"
+                        android:text="*"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/text_size_md" />
+
+                </LinearLayout>
+
+                <EditText
+                    android:id="@+id/edt_register_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/btn_height"
+                    android:layout_gravity="center"
+                    android:layout_marginVertical="@dimen/margin_sm"
+                    android:background="@drawable/edittext_background"
+                    android:hint="@string/app_uname"
+                    android:singleLine="true"
+                    android:textColor="@color/black"
+                    android:textColorHint="@color/hint"
+                    android:inputType="text"/>
+
+
+                <!-- 회사이름 -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/margin_md"
+                        android:layout_marginBottom="@dimen/margin_sm"
+                        android:text="@string/app_company"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/text_size_md" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/margin_sm"
+                        android:layout_marginTop="@dimen/margin_md"
+                        android:layout_marginBottom="@dimen/margin_sm"
+                        android:text="*"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/text_size_md" />
+
+                </LinearLayout>
+
+                <EditText
+                    android:id="@+id/edt_register_company"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/btn_height"
+                    android:layout_gravity="center"
+                    android:layout_marginVertical="@dimen/margin_sm"
+                    android:background="@drawable/edittext_background"
+                    android:hint="@string/app_company"
+                    android:singleLine="true"
+                    android:textColor="@color/black"
+                    android:textColorHint="@color/hint"
+                    android:inputType="text"/>
+
+
+                <!-- 소속팀 / 직급 -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/margin_md"
+                        android:layout_marginBottom="@dimen/margin_sm"
+                        android:text="소속팀 / 직급"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/text_size_md" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/margin_sm"
+                        android:layout_marginTop="@dimen/margin_md"
+                        android:layout_marginBottom="@dimen/margin_sm"
+                        android:text="*"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/text_size_md" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="-8dp"
+                    android:paddingRight="-8dp"
+                    android:orientation="horizontal">
+                    <EditText
+                        android:id="@+id/edt_register_team"
+                        android:layout_width="0dp"
+                        android:layout_height="@dimen/btn_height"
+                        android:layout_weight="1"
+                        android:layout_gravity="center"
+                        android:layout_margin="@dimen/margin_sm"
+                        android:layout_marginVertical="@dimen/margin_sm"
+                        android:background="@drawable/edittext_background"
+                        android:hint="소속팀"
+                        android:singleLine="true"
+                        android:textColor="@color/black"
+                        android:textColorHint="@color/hint"
+                        android:inputType="text"/>
+
+                    <EditText
+                        android:id="@+id/edt_register_rank"
+                        android:layout_width="0dp"
+                        android:layout_height="@dimen/btn_height"
+                        android:layout_weight="1"
+                        android:layout_gravity="center"
+                        android:layout_margin="@dimen/margin_sm"
+                        android:background="@drawable/edittext_background"
+                        android:hint="직급"
+                        android:singleLine="true"
+                        android:textColor="@color/black"
+                        android:textColorHint="@color/hint"
+                        android:inputType="text"/>
+                </LinearLayout>
+
+                <!-- 휴대폰 -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/margin_md"
+                        android:layout_marginBottom="@dimen/margin_sm"
+                        android:text="@string/app_tel"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/text_size_md" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/margin_sm"
+                        android:layout_marginTop="@dimen/margin_md"
+                        android:layout_marginBottom="@dimen/margin_sm"
+                        android:text="*"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/text_size_md" />
+
+                </LinearLayout>
+
+                <EditText
+                    android:id="@+id/edt_register_tel"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/btn_height"
+                    android:layout_gravity="center"
+                    android:layout_marginVertical="@dimen/margin_sm"
+                    android:background="@drawable/edittext_background"
+                    android:hint="@string/app_tel"
+                    android:singleLine="true"
+                    android:textColor="@color/black"
+                    android:textColorHint="@color/hint"
+                    android:inputType="numberDecimal"/>
+
+                <!-- 이메일 -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/margin_md"
+                        android:layout_marginBottom="@dimen/margin_sm"
+                        android:text="@string/app_email"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/text_size_md" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/margin_sm"
+                        android:layout_marginTop="@dimen/margin_md"
+                        android:layout_marginBottom="@dimen/margin_sm"
+                        android:text="*"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/text_size_md" />
+
+                </LinearLayout>
+
+                <EditText
+                    android:id="@+id/edt_register_email"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/btn_height"
+                    android:layout_gravity="center"
+                    android:layout_marginVertical="@dimen/margin_sm"
+                    android:background="@drawable/edittext_background"
+                    android:hint="@string/app_email"
+                    android:inputType="text"
+                    android:singleLine="true"
+                    android:textColor="@color/black"
+                    android:textColorHint="@color/hint" />
+
+                <!-- 주소 -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/margin_md"
+                        android:layout_marginBottom="@dimen/margin_sm"
+                        android:text="@string/app_addr"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/text_size_md" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/margin_sm"
+                        android:layout_marginTop="@dimen/margin_md"
+                        android:layout_marginBottom="@dimen/margin_sm"
+                        android:text="*"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/text_size_md" />
+
+                </LinearLayout>
+
+                <EditText
+                    android:id="@+id/edt_register_addr"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/btn_height"
+                    android:layout_gravity="center"
+                    android:layout_marginVertical="@dimen/margin_sm"
+                    android:background="@drawable/edittext_background"
+                    android:hint="@string/app_addr"
+                    android:singleLine="true"
+                    android:textColor="@color/black"
+                    android:textColorHint="@color/hint"
+                    android:inputType="text"/>
+
+                <!-- 대표명함 설정 여부 -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/margin_md"
+                        android:layout_marginBottom="@dimen/margin_sm"
+                        android:text="대표명함 설정"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/text_size_md" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/margin_sm"
+                        android:layout_marginTop="@dimen/margin_md"
+                        android:layout_marginBottom="@dimen/margin_sm"
+                        android:text="*"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/text_size_md" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <RadioGroup
+                        android:id="@+id/rdg1"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:orientation="horizontal">
+
+                        <RadioButton
+                            android:id="@+id/radioButton"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="@dimen/margin_md"
+                            android:text="예" />
+
+                        <RadioButton
+                            android:id="@+id/radioButton2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="아니오" />
+                    </RadioGroup>
+                </LinearLayout>
+
+
+            </LinearLayout>
+        </ScrollView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    <android.widget.Button
+        android:id="@+id/btn_register"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/btn_float_height"
+        android:text="@string/app_add_card"
+        android:background="@drawable/button_solid_background"
+        android:textColor="@color/white"
+        android:textSize="@dimen/text_size_md"
+        android:textStyle="bold"
+        app:layout_anchor="@id/content"
+        app:layout_anchorGravity="bottom"/>
+
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

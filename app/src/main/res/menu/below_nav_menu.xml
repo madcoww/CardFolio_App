@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/nav_home"
+        android:enabled="true"
+        android:icon="@drawable/icon_home"
+        android:title="@string/app_home" />
+    <item
+        android:id="@+id/nav_cards"
+        android:enabled="true"
+        android:icon="@drawable/icon_assignment"
+        android:title="@string/app_cards" />
+    <item
+        android:id="@+id/nav_scan"
+        android:enabled="true"
+        android:icon="@drawable/icon_camera"
+        android:title="@string/app_scan" />
+    <item
+        android:id="@+id/nav_mypage"
+        android:enabled="true"
+        android:icon="@drawable/icon_account_box"
+        android:title="@string/app_mypage" />
+</menu>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/ohter_btn_menu1"
+        android:enabled="true"
+        android:drawableEnd="@drawable/icon_arr_right"
+        android:title="공유하기" />
+    <item
+        android:id="@+id/ohter_btn_menu2"
+        android:enabled="true"
+        android:drawableEnd="@drawable/icon_arr_right"
+        android:title="상세보기" />
+    <item
+        android:id="@+id/ohter_btn_menu3"
+        android:enabled="true"
+        android:drawableEnd="@drawable/icon_arr_right"
+        android:title="삭제" />
+</menu>

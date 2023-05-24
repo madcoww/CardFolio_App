@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".RegisterDoneActivity">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:paddingBottom="@dimen/btn_float_height"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        app:layout_constraintBottom_toTopOf="@id/btn_register">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="216dip"
+                android:layout_height="117dip"
+                android:layout_gravity="center"
+                android:layout_marginBottom="@dimen/margin_lg"
+                android:src="@drawable/logo" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="이메일 확인 이메일이 전송되었습니다."
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:textSize="@dimen/text_size_lg"
+                android:gravity="center"/>
+
+            <TextView
+                android:id="@+id/txtEmail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_sm"
+                android:text="보내드린 인증 메일을 확인해주세요."
+                android:textColor="@color/gray"
+                android:textSize="@dimen/text_size_sm"
+                android:gravity="center"/>
+
+            <android.widget.Button
+                android:id="@+id/btn_confrim"
+                android:layout_width="112dp"
+                android:layout_height="@dimen/btn_sm_height"
+                android:layout_marginVertical="@dimen/margin_sm"
+                android:background="@drawable/button_sm_background"
+                android:text="인증 완료"
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_size_sm"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <LinearLayout
+                android:id="@+id/bt_txt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="vertical">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_lg"
+                    android:text="이메일을 확인할 수 없나요?"
+                    android:textColor="@color/gray"
+                    android:textSize="@dimen/text_size_sm"
+                    android:gravity="center"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="스팸편지함 확인 또는 "
+                        android:textColor="#AAAAAA"
+                        android:textSize="@dimen/text_size_sm"
+                        android:gravity="center"/>
+
+                    <TextView
+                        android:id="@+id/send_email"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=" 인증 메일 다시 보내기"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/text_size_sm"
+                        android:gravity="center"/>
+
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    <android.widget.Button
+        android:id="@+id/btn_start"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/btn_float_height"
+        android:text="시작하기"
+        android:background="@drawable/button_solid_background"
+        android:textColor="@color/white"
+        android:textSize="@dimen/text_size_md"
+        android:textStyle="bold"
+        app:layout_anchor="@id/content"
+        app:layout_anchorGravity="bottom"/>
+
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

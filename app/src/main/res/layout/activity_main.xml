@@ -1,0 +1,289 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/mainActivity"
+    tools:context=".MainActivity">
+
+    <!-- AppBarLayout -->
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <include layout="@layout/toolbar"/>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:paddingBottom="@dimen/btn_float_height"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <LinearLayout
+            android:id="@+id/scrollView2"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:background="#80EFEFEF"
+            android:orientation="vertical"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:background="@color/white"
+                    android:padding="@dimen/padding_md">
+
+                    <EditText
+                        android:id="@+id/edt_search"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/btn_height"
+                        android:layout_gravity="center"
+                        android:layout_marginVertical="@dimen/margin_sm"
+                        android:background="@drawable/edittext_search_background"
+                        android:drawableEnd="@drawable/icon_search"
+                        android:hint="@string/search_hint"
+                        android:inputType="text"
+                        android:singleLine="true"
+                        android:textColor="@color/black"
+                        android:textColorHint="@color/hint" />
+                </LinearLayout>
+                <TabHost
+                    android:id="@+id/tabhost"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+                    <TabWidget
+                        android:id="@android:id/tabs"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"/>
+
+                    <FrameLayout android:id="@android:id/tabcontent"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+                        <!--Tab1-->
+                        <LinearLayout
+                            android:id="@+id/tab1"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical"
+                                android:padding="@dimen/padding_md">
+
+                                <androidx.constraintlayout.widget.ConstraintLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="center"
+                                    android:orientation="horizontal">
+
+                                    <TextView
+                                        android:id="@+id/mainTitle"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginEnd="160dp"
+                                        android:text="@string/app_mn1"
+                                        android:textSize="@dimen/text_size_lg"
+                                        android:textColor="@color/black"
+                                        android:textStyle="bold"
+                                        app:layout_constraintBottom_toBottomOf="parent"
+                                        app:layout_constraintEnd_toStartOf="@+id/btn_register_card"
+                                        app:layout_constraintHorizontal_bias="0.0"
+                                        app:layout_constraintStart_toStartOf="parent"
+                                        app:layout_constraintTop_toTopOf="parent"
+                                        app:layout_constraintVertical_bias="0.444" />
+
+                                    <android.widget.Button
+                                        android:id="@+id/btn_register_card"
+                                        android:layout_width="112dp"
+                                        android:layout_height="@dimen/btn_sm_height"
+                                        android:layout_marginVertical="@dimen/margin_sm"
+                                        android:background="@drawable/button_sm_background"
+                                        android:text="신규명함등록"
+                                        android:textColor="@color/black"
+                                        android:textSize="@dimen/text_size_sm"
+                                        app:layout_constraintBottom_toBottomOf="parent"
+                                        app:layout_constraintEnd_toEndOf="parent"
+                                        app:layout_constraintTop_toTopOf="parent" />
+                                </androidx.constraintlayout.widget.ConstraintLayout>
+                            </LinearLayout>
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical"
+                                android:paddingLeft="@dimen/padding_md"
+                                android:paddingRight="@dimen/padding_md"
+                                android:paddingBottom="@dimen/padding_md">
+
+                                <androidx.recyclerview.widget.RecyclerView
+                                    android:id="@+id/recyclerview_main_list"
+                                    android:scrollbars="vertical"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"/>
+
+                            </LinearLayout>
+                        </LinearLayout>
+
+                        <!--Tab2-->
+                        <LinearLayout
+                            android:id="@+id/tab2"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical"
+                                android:padding="@dimen/padding_md">
+
+                                <androidx.constraintlayout.widget.ConstraintLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="center"
+                                    android:orientation="horizontal">
+
+                                    <TextView
+                                        android:id="@+id/mainTitle2"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginEnd="160dp"
+                                        android:text="@string/app_mn2"
+                                        android:textSize="@dimen/text_size_lg"
+                                        android:textColor="@color/black"
+                                        android:textStyle="bold"
+                                        app:layout_constraintBottom_toBottomOf="parent"
+                                        app:layout_constraintEnd_toStartOf="@+id/btn_scan_card"
+                                        app:layout_constraintHorizontal_bias="0.0"
+                                        app:layout_constraintStart_toStartOf="parent"
+                                        app:layout_constraintTop_toTopOf="parent"
+                                        app:layout_constraintVertical_bias="0.444" />
+
+                                    <android.widget.Button
+                                        android:id="@+id/btn_scan_card"
+                                        android:layout_width="112dp"
+                                        android:layout_height="@dimen/btn_sm_height"
+                                        android:layout_marginVertical="@dimen/margin_sm"
+                                        android:background="@drawable/button_sm_background"
+                                        android:text="@string/app_scan"
+                                        android:textColor="@color/black"
+                                        android:textSize="@dimen/text_size_sm"
+                                        app:layout_constraintBottom_toBottomOf="parent"
+                                        app:layout_constraintEnd_toEndOf="parent"
+                                        app:layout_constraintTop_toTopOf="parent" />
+                                </androidx.constraintlayout.widget.ConstraintLayout>
+                            </LinearLayout>
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical"
+                                android:paddingLeft="@dimen/padding_md"
+                                android:paddingRight="@dimen/padding_md"
+                                android:paddingBottom="@dimen/padding_md">
+
+                                <androidx.recyclerview.widget.RecyclerView
+                                    android:id="@+id/recyclerview_other_list"
+                                    android:scrollbars="vertical"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"/>
+
+                            </LinearLayout>
+                        </LinearLayout>
+
+
+                        <!--Tab3-->
+                        <LinearLayout
+                            android:id="@+id/tab3"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical"
+                                android:padding="@dimen/padding_md">
+
+                                <androidx.constraintlayout.widget.ConstraintLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="center"
+                                    android:orientation="horizontal">
+
+                                    <TextView
+                                        android:id="@+id/mainTitle3"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginEnd="160dp"
+                                        android:text="검색결과"
+                                        android:textSize="@dimen/text_size_lg"
+                                        android:textColor="@color/black"
+                                        android:textStyle="bold"
+                                        app:layout_constraintBottom_toBottomOf="parent"
+                                        app:layout_constraintHorizontal_bias="0.0"
+                                        app:layout_constraintStart_toStartOf="parent"
+                                        app:layout_constraintTop_toTopOf="parent"
+                                        app:layout_constraintVertical_bias="0.444" />
+
+                                    <!--<android.widget.Button
+                                        android:id="@+id/btn_scan_card2"
+                                        android:layout_width="112dp"
+                                        android:layout_height="@dimen/btn_sm_height"
+                                        android:layout_marginVertical="@dimen/margin_sm"
+                                        android:background="@drawable/button_sm_background"
+                                        android:text="@string/app_scan"
+                                        android:textColor="@color/black"
+                                        android:textSize="@dimen/text_size_sm"
+                                        app:layout_constraintBottom_toBottomOf="parent"
+                                        app:layout_constraintEnd_toEndOf="parent"
+                                        app:layout_constraintTop_toTopOf="parent" />-->
+                                </androidx.constraintlayout.widget.ConstraintLayout>
+                            </LinearLayout>
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical"
+                                android:paddingLeft="@dimen/padding_md"
+                                android:paddingRight="@dimen/padding_md"
+                                android:paddingBottom="@dimen/padding_md">
+
+                                <androidx.recyclerview.widget.RecyclerView
+                                    android:id="@+id/recyclerview_other_list2"
+                                    android:scrollbars="vertical"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"/>
+
+                            </LinearLayout>
+                        </LinearLayout>
+                    </FrameLayout>
+                </TabHost>
+            </LinearLayout>
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <!--  하단 네비게이션 고정 메뉴  -->
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottom_nav"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/black"
+        app:labelVisibilityMode="labeled"
+        app:itemTextColor="@color/white"
+        app:layout_anchor="@id/content"
+        app:layout_anchorGravity="bottom"
+        app:itemIconTint="@android:color/white"
+        app:menu="@menu/below_nav_menu"/>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

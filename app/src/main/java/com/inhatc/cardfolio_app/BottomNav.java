@@ -44,8 +44,8 @@ public class BottomNav {
 
                     case R.id.nav_scan:
                         // 카메라 스캔
-                        //Intent intent3 = new Intent(currentActivity, ScanCard.class);
-                        //currentActivity.startActivity(intent3);
+                        Intent intent3 = new Intent(currentActivity, QrScannerActivity.class);
+                        currentActivity.startActivity(intent3);
                         return true;
 
                     case R.id.nav_mypage:

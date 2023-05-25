@@ -19,7 +19,7 @@
         android:id="@+id/content"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/white"
+        android:background="#80EFEFEF"
         android:paddingBottom="@dimen/btn_float_height"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
@@ -27,7 +27,6 @@
             android:id="@+id/scrollView2"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:background="#80EFEFEF"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -139,6 +138,7 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/areaQr"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
@@ -169,16 +169,16 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <!--  하단 네비게이션 고정 메뉴  -->
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/bottom_nav"
+    <android.widget.Button
+        android:id="@+id/btn_store"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/black"
-        app:labelVisibilityMode="labeled"
-        app:itemTextColor="@color/white"
+        android:layout_height="@dimen/btn_float_height"
+        android:text="저장하기"
+        android:background="@drawable/button_solid_background"
+        android:textColor="@color/white"
+        android:textSize="@dimen/text_size_md"
+        android:textStyle="bold"
         app:layout_anchor="@id/content"
-        app:layout_anchorGravity="bottom"
-        app:itemIconTint="@android:color/white"
-        app:menu="@menu/below_nav_menu"/>
+        app:layout_anchorGravity="bottom"/>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

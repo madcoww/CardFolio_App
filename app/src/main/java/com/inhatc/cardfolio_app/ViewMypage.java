@@ -1,6 +1,9 @@
 package com.inhatc.cardfolio_app;
 
+import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -9,6 +12,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
@@ -226,10 +230,36 @@ public class ViewMypage extends AppCompatActivity {
     View.OnClickListener requestDeleteUser = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            mFirebaseAuth.getCurrentUser().delete();
-            Intent loginIntent = new Intent(ViewMypage.this, LoginActivity.class);
-            startActivity(loginIntent);
-            finish();
+            showDialog();
         }
     };
+
+    // 삭제
+    private void showDialog() {
+        AlertDialog.Builder msgBuilder = new AlertDialog.Builder(ViewMypage.this)
+                .setTitle("정말로 탈퇴 하시겠습니까?")
+                .setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        delete_user();
+                        Toast.makeText(ViewMypage.this, "탈퇴 되었습니다.", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .setNegativeButton("취소", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        Toast.makeText(ViewMypage.this, "취소 되었습니다.", Toast.LENGTH_SHORT).show();
+                    }
+                });
+        AlertDialog msgDlg = msgBuilder.create();
+        msgDlg.show();
+    }
+
+    // 회원 삭제
+    public void delete_user(){
+        mFirebaseAuth.getCurrentUser().delete();
+        Intent loginIntent = new Intent(ViewMypage.this, LoginActivity.class);
+        startActivity(loginIntent);
+        finish();
+    }
 }

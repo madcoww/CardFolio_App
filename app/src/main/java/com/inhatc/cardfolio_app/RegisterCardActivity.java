@@ -510,10 +510,7 @@ public class RegisterCardActivity extends AppCompatActivity {
         @Override
         public void onClick(View view) {
             if (isChekLogo() && isChekName() && isChekCname() && isChekCdept() && isChekCpos() && isChekPnums() && isChekEmail() && isChekCaddr()) {
-                if(isChangeUri) {
-                    //스토리지 업로드
-                    uploadToStorage();
-                }
+                uploadToStorage();
                 //RDB 업로드
                 uploadToRDB();
                 //MainActivity 이동
@@ -523,23 +520,6 @@ public class RegisterCardActivity extends AppCompatActivity {
             }
         }
     };
-
-    //랜덤 코드 생성
-    private static String generateRandomCode() {
-        int codeLength = 6; // 회원 코드 길이
-        String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-
-        Random random = new Random();
-        StringBuilder codeBuilder = new StringBuilder();
-
-        for (int i = 0; i < codeLength; i++) {
-            int randomIndex = random.nextInt(characters.length());
-            char randomChar = characters.charAt(randomIndex);
-            codeBuilder.append(randomChar);
-        }
-
-        return codeBuilder.toString();
-    }
 
     //logo image URI
     ActivityResultLauncher<Intent> activityResult = registerForActivityResult(
@@ -559,7 +539,7 @@ public class RegisterCardActivity extends AppCompatActivity {
     );
     //firebase storage logo image 업로드
     private void uploadToStorage(){
-
+        Log.d("이미저장:", "성공!!");
         StorageReference storageRef = storage.getReference();
         StorageReference fileRef = storageRef.child("logo").child(imageUri.toString());
 
@@ -579,7 +559,8 @@ public class RegisterCardActivity extends AppCompatActivity {
     //firebase RDB upload
     void uploadToRDB(){
         if(isNewRegister) {
-            card_id = generateRandomCode();
+            RandomCodeMaker randomCodeMaker = RandomCodeMaker.getRandomCodeMaker();
+            card_id = randomCodeMaker.getCode();
         }
         String i_Name = cName.getText().toString();
         String i_Cname = cCname.getText().toString();
@@ -663,11 +644,4 @@ public class RegisterCardActivity extends AppCompatActivity {
         });
         //is_default를 0으로 바꿈, 읽어온 c_id와 파라미터 c_id가 일치할 경우 1로 바꿈
     }
-    //OtherCards 등록 다른 사람 명함을 등록(스캔 후) 동작이 좋을 것으로 사료
-//    void uploadToRDB_rel(String user, String id){
-//        CardRel rData = new CardRel();
-//        rData.setU_id(user);
-//        rData.setC_id(id);
-//        mDatabaseRef.child("OtherCards").child(generateRandomCode()).setValue(rData);
-//    }
 }

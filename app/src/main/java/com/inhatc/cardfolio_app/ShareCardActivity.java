@@ -9,8 +9,13 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,6 +33,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -35,6 +41,8 @@ import com.google.zxing.BarcodeFormat;
 import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.common.BitMatrix;
 import com.journeyapps.barcodescanner.BarcodeEncoder;
+
+import java.util.ArrayList;
 
 
 public class ShareCardActivity extends AppCompatActivity {
@@ -45,6 +53,7 @@ public class ShareCardActivity extends AppCompatActivity {
     private FirebaseAuth mFirebaseAuth;                    // 인증
 
     private DatabaseReference mDatabaseRef;                // DB
+    private FirebaseUser firebaseUser;
 
     FirebaseStorage storage = FirebaseStorage.getInstance();
 
@@ -53,9 +62,12 @@ public class ShareCardActivity extends AppCompatActivity {
     private ImageView s_qr;
     private ImageView s_logo;
     private TextView  s_uname, s_cname, s_team_rank, s_pnum, s_email;
+    private Button btn_store;
 
     private String share_strImgUri;
     private String  share_uname, share_cname, share_team, share_rank, share_pnum, share_email;
+    private LinearLayout areaQr;
+    private boolean isForStore = false; // 저장 액티비티인지 아닌지 구분자
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -72,18 +84,14 @@ public class ShareCardActivity extends AppCompatActivity {
         toolbarTitle.setText(toolbarName);
 
         // 하단 네비게이션
-        bottomNavigationView = findViewById(R.id.bottom_nav);
-        bottomNav = new BottomNav(bottomNavigationView);
-        bottomNav.setBottomNavigationListener(this);
+//        bottomNavigationView = findViewById(R.id.bottom_nav);
+//        bottomNav = new BottomNav(bottomNavigationView);
+//        bottomNav.setBottomNavigationListener(this);
 
         // 파이어베이스
         mFirebaseAuth = FirebaseAuth.getInstance();
         mDatabaseRef  = FirebaseDatabase.getInstance().getReference("cardFolio");
-
-        Intent intent = getIntent();
-        s_card_id = intent.getStringExtra("c_id");
-        //Toast.makeText(this, s_card_id, Toast.LENGTH_SHORT).show();
-
+        firebaseUser = mFirebaseAuth.getCurrentUser(); // 로그인한 사용자 정보 읽기
 
 
         s_logo = (ImageView) findViewById(R.id.img_share_logo);
@@ -94,8 +102,28 @@ public class ShareCardActivity extends AppCompatActivity {
         s_email = (TextView) findViewById(R.id.tv_share_email);
         s_qr = (ImageView) findViewById(R.id.s_qr) ;
 
-        load_data(s_card_id);
-        makeQR(s_card_id);
+        areaQr = (LinearLayout) findViewById(R.id.areaQr);
+        btn_store = (Button) findViewById(R.id.btn_store);
+
+        
+        Intent thisIntent = getIntent();
+        String callingIntent = thisIntent.getStringExtra("intent_name");
+        s_card_id = thisIntent.getStringExtra("c_id");
+        load_data(s_card_id); // data load
+        isForStore = callingIntent.equals("qrScanStoreIntent") ? true : false;
+        if (isForStore) {
+            // 스캔한 명함 저장
+            Log.d("s_card_id 정보 스캔", "스캔시작");
+            Log.d("s_card_id 정보", s_card_id);
+            ViewGroup parentView = (ViewGroup) areaQr.getParent();
+            parentView.removeView(areaQr); // Qr 영역 삭제
+            btn_store.setOnClickListener(onClickListenerForStore);
+        }else{
+            // 명함공유
+            ViewGroup parentView = (ViewGroup) btn_store.getParent();
+            parentView.removeView(btn_store); // 저장 버튼 삭제
+            makeQR(s_card_id); // QR코드 생성
+        }
     }
 
     @Override
@@ -175,5 +203,78 @@ public class ShareCardActivity extends AppCompatActivity {
             Bitmap bitmap = barcodeEncoder.createBitmap(bitMatrix);
             s_qr.setImageBitmap(bitmap);
         }catch (Exception e){}
+    }
+
+    View.OnClickListener onClickListenerForStore = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            String uid = firebaseUser.getUid();
+            uploadToRDB_rel(uid, s_card_id);
+
+            // 액티비티 종료
+            Intent intent = new Intent(ShareCardActivity.this, MainActivity.class);
+            startActivity(intent);
+            finish();
+        }
+    };
+
+    //OtherCards 등록 다른 사람 명함을 등록(스캔 후) 동작이 좋을 것으로 사료
+    void uploadToRDB_rel(String user, String idForStore){
+        CardRel rData = new CardRel();
+        rData.setU_id(user);
+        rData.setC_id(idForStore);
+
+        RandomCodeMaker randomCodeMaker = RandomCodeMaker.getRandomCodeMaker();
+        String code = randomCodeMaker.getCode();
+
+        // 중복 여부 체크하여 저장
+        if(!isDuplicateCard(user, idForStore)) {
+            Log.d("명함 저장 여부 : ", "완료");
+            // 명함 저장
+            mDatabaseRef.child("OtherCards").child(code).setValue(rData);
+            Toast.makeText(ShareCardActivity.this, "명함 공유가 완료되었습니다.", Toast.LENGTH_SHORT).show();
+        }else {
+            // 이미 존재
+            Log.d("명함 저장 여부 : ", "이미 존재");
+            Toast.makeText(ShareCardActivity.this, "이미 저장된 명함입니다.", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private ArrayList<OtherCards> otherArrayList;
+    public boolean isDuplicateCard(String user, String idForStore){
+        otherArrayList = new ArrayList<>();
+        // 로그인한 사용자 명함집
+        Query query = mDatabaseRef.child("OtherCards").orderByChild("u_id").equalTo(user);
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if(dataSnapshot != null){
+                    for (DataSnapshot userSnapshot : dataSnapshot.getChildren()) {
+                        OtherCards otherCards = new OtherCards();
+                        otherCards = userSnapshot.getValue(OtherCards.class);
+                        otherArrayList.add(otherCards);
+                    }
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                // 쿼리가 취소되었거나 실패한 경우에 대한 처리
+            }
+        });
+
+        String stdCidData = null;
+        for(OtherCards c : otherArrayList){
+            stdCidData = c.getU_id();
+            if(stdCidData.equals(idForStore)){
+                return false;
+            }
+        }
+        return true;
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        MainActivity.myTabHost.setCurrentTab(1);
     }
 }

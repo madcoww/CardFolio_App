@@ -62,7 +62,7 @@ public class ViewCardActivity extends AppCompatActivity {
     private TextView c_uname, c_cname, c_team_rank, c_pnum, c_email, c_addr, fstBtnTxt;
 
     private String  card_uname, card_cname, card_team, card_rank, card_pnum, card_email, card_caddr;
-    private static String card_uid;
+    private static String card_uid, conf_uid;
     private LinearLayout ll_call, ll_share, ll_update, ll_delete;
 
     private String strImgUri;
@@ -120,16 +120,22 @@ public class ViewCardActivity extends AppCompatActivity {
 
 
         firebaseUser = mFirebaseAuth.getCurrentUser(); // 로그인한 사용자 정보 읽기
-        //if(card_uid.equals(firebaseUser.getUid())){
+        
+        // 내 명함인지 다른상함 명함인지 확인
+        Intent thisIntent = getIntent();
+        conf_uid = thisIntent.getStringExtra("u_id");
+        if(conf_uid.equals(firebaseUser.getUid())){
+            isMine = true;
+        }
         if(isMine){
-            isMine = true;
-        }else{
-            isMine = true;
+            // 내 명함일때
             fstBtnImg = (ImageView) findViewById(R.id.fstBtnImg);
             fstBtnTxt = (TextView) findViewById(R.id.fstBtnTxt);
             fstBtnTxt.setText("대표명함");
             fstBtnImg.setBackgroundResource(R.drawable.icon_check);
+            Log.d("내명함인가요?", "네 " + card_uid);
         }
+        Log.d("내명함인가요?", "아뇨 " + card_uid);
     }
     View.OnClickListener btn_event = new View.OnClickListener() {
         @Override
@@ -140,6 +146,9 @@ public class ViewCardActivity extends AppCompatActivity {
                     if(isMine){
                         is_default(card_id);
                         Toast.makeText(ViewCardActivity.this, "대표명함 설정이 완료되었습니다.", Toast.LENGTH_SHORT).show();
+                        Intent mainIntent = new Intent(ViewCardActivity.this, MainActivity.class);
+                        startActivity(mainIntent);
+                        finish();
                     }
                     else {
                         Intent dialIntent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + c_pnum.getText()));

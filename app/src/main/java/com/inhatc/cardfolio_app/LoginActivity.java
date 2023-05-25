@@ -45,11 +45,11 @@ public class LoginActivity extends AppCompatActivity {
         // Intent 이동
         findViewById(R.id.et_to_register).setOnClickListener(onclick_Event);
         findViewById(R.id.btn_login).setOnClickListener(onclick_Event);
-        
+
         // 비밀번호 재설정
         findViewById(R.id.et_send_pw).setOnClickListener(requestSendPwEmail);
     }
-    
+
     //포커스 해제
     @Override
     public boolean dispatchTouchEvent(MotionEvent event) {

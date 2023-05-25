@@ -57,6 +57,10 @@
         <activity android:name=".ViewMypage"
             android:windowSoftInputMode="stateAlwaysHidden"
             android:theme="@style/Theme.Diary.NoActionBar"/>
+
+        <activity android:name=".QrScannerActivity"
+            android:windowSoftInputMode="stateAlwaysHidden"
+            android:theme="@style/Theme.Diary.NoActionBar"/>
     </application>
 
 </manifest>

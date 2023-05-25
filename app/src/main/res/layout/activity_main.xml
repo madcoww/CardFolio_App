@@ -50,6 +50,7 @@
                         android:id="@+id/edt_search"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/btn_height"
+                        android:focusableInTouchMode="true"
                         android:layout_gravity="center"
                         android:layout_marginVertical="@dimen/margin_sm"
                         android:background="@drawable/edittext_search_background"

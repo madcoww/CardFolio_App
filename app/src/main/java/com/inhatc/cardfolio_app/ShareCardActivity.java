@@ -147,6 +147,7 @@ public class ShareCardActivity extends AppCompatActivity {
             }
         });
     }
+
     //logo 이미지 불러오기
     void load_logo(){
         StorageReference storageRef = storage.getReference();
@@ -164,6 +165,7 @@ public class ShareCardActivity extends AppCompatActivity {
             }
         });
     }
+
     void makeQR(String card_id){
         MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
         String text = card_id;

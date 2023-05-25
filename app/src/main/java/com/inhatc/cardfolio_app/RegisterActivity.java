@@ -1,16 +1,20 @@
 package com.inhatc.cardfolio_app;
 
 import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ScrollView;
@@ -137,18 +141,29 @@ public class RegisterActivity extends AppCompatActivity {
         toolbarTitle.setText(toolbarName);
 
 
-        // 이메일 검사
-        uId.addTextChangedListener(uIdWatcher);
-
-        // 패스워드 검사
-        uPw.addTextChangedListener(uPwWatcher);
+        // 검사
+        uId.addTextChangedListener(uIdWatcher); // 이메일
+        uPw.addTextChangedListener(uPwWatcher); // 패스워드
         uPwConfirm.addTextChangedListener(uPwConfirmWatcher);
-
-        // 이름 검사
-        uName.addTextChangedListener(uNameWatcher);
-
-        // 휴대폰 검사
-        uTel.addTextChangedListener(uTelWatcher);
+        uName.addTextChangedListener(uNameWatcher); // 이름
+        uTel.addTextChangedListener(uTelWatcher); // 휴대폰
+    }
+    //포커스 해제
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent event) {
+        if (event.getAction() == MotionEvent.ACTION_DOWN) {
+            View v = getCurrentFocus();
+            if (v instanceof EditText) {
+                Rect outRect = new Rect();
+                v.getGlobalVisibleRect(outRect);
+                if (!outRect.contains((int) event.getRawX(), (int) event.getRawY())) {
+                    v.clearFocus();
+                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+                }
+            }
+        }
+        return super.dispatchTouchEvent(event);
     }
 
     @Override
@@ -162,37 +177,50 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     // 이메일 검사
+
+    // 이메일 검사
     private TextWatcher uIdWatcher = new TextWatcher() {
         private Handler handler = new Handler();
         private Runnable runnable;
-
         @Override
         public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
             // 타이핑 도중에 호출되는 메소드
             handler.removeCallbacks(runnable); // 기존의 검사 요청이 있다면 제거
-            String strData = uId.getText().toString();
-            if(strData.isEmpty()){
-                // 이메일 주소 빈값일때
-                warning_email.setText("이메일 주소를 입력해주세요");
-                warning_email.setTextColor(Color.RED);
-            }else if(!inputPatternChecker.isEmail(strData)){
-                // 이메일 주소 형식 어긋날 때
-                warning_email.setText("이메일 주소에 '@'를 포함해 주세요");
-                warning_email.setTextColor(Color.RED);
-            }else if(!isDuplicateId && isNewRegister) {
-                // 중복 확인 안했을 때
-                warning_email.setText("이메일 주소 중복확인을 해주세요.");
-                warning_email.setTextColor(Color.RED);
-            }else{
-                warning_email.setText("");
-            }
+            boolean isCheck;
+            isCheck = isChekEmail();
         }
         @Override
         public void afterTextChanged(final Editable s) { }
     };
-
+    public boolean isChekEmail(){
+        String strData = uId.getText().toString();
+        if(strData.isEmpty()){
+            // 이메일 주소 빈값일때
+            moveFocus(uId);
+            warning_email.setText("이메일 주소를 입력해주세요");
+            warning_email.setTextColor(Color.RED);
+            return false;
+        }else if(!inputPatternChecker.isEmail(strData)){
+            // 이메일 주소 형식 어긋날 때
+            warning_email.setText("이메일 주소에 '@'를 포함해 주세요");
+            warning_email.setTextColor(Color.RED);
+            return false;
+        }else if(!isDuplicateId && isNewRegister) {
+            // 중복 확인 안했을 때
+            warning_email.setText("이메일 주소 중복확인을 해주세요.");
+            warning_email.setTextColor(Color.RED);
+            return false;
+        }else if(isDuplicateId){
+            warning_email.setText("사용가능한 이메일 주소입니다.");
+            warning_email.setTextColor(Color.parseColor("#16a54f"));
+            return true;
+        }else{
+            warning_email.setText("");
+            return true;
+        }
+    }
     // 중복확인 버튼
     View.OnClickListener registerIdCheck = new View.OnClickListener() {
         @Override
@@ -254,54 +282,62 @@ public class RegisterActivity extends AppCompatActivity {
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
             handler.removeCallbacks(runnable); // 기존의 검사 요청이 있다면 제거
-            String strData = uPw.getText().toString();
-            if (isNewRegister) {
-                if(strData.length()<6 || strData.length()>16){
-                    warning_pw2.setText("6자~16자의 영문/숫자 조합으로 입력해주세요.");
-                    warning_pw2.setTextColor(Color.RED);
-                }else{
-                    warning_pw2.setText("");
-                }
-            }else {
-                // 정보수정
-                firebaseUser = mFirebaseAuth.getCurrentUser(); // 로그인한 사용자 정보 읽기
-                Log.d("getUid : ", "getUid" + firebaseUser.getUid());
-                if(firebaseUser != null) {
-                    Query query = mDatabaseRef.child("UserAccount").orderByChild("idToken").equalTo(firebaseUser.getUid());
-                    query.addValueEventListener(new ValueEventListener() {
-
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                            String pw = null;
-                            for (DataSnapshot userSnapshot : dataSnapshot.getChildren()) {
-                                pw = userSnapshot.child("user_pw").getValue(String.class);
-                                Log.d("getPw : ", "pw" + pw);
-                            }
-
-                            if(strData.isEmpty()){
-                                warning_pw.setText("비밀번호를 입력해주세요.");
-                            } else if (pw.equals(uPw.getText().toString())) {
-                                warning_pw.setText("");
-                                isVaildPw = true;
-                            }else{
-                                warning_pw.setText("비밀번호를 확인해주세요.");
-                                warning_pw.setTextColor(Color.RED);
-                            }
-                        }
-
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError error) {
-                            Toast.makeText(RegisterActivity.this, "정보를 읽는데 실패하였습니다.", Toast.LENGTH_SHORT).show();
-                        }
-                    });
-                }else{
-                    isVaildPw = true;
-                }
-            }
+            boolean isChekPw;
+            isChekPw = isChekPw();
         }
         @Override
         public void afterTextChanged(final Editable s) { }
     };
+    public boolean isChekPw(){
+        String strData = uPw.getText().toString();
+        if (isNewRegister) {
+            if(strData.length()<6 || strData.length()>16){
+                warning_pw2.setText("6자~16자의 영문/숫자 조합으로 입력해주세요.");
+                warning_pw2.setTextColor(Color.RED);
+                return false;
+            }else{
+                warning_pw2.setText("");
+                return true;
+            }
+        }else {
+            // 정보수정
+            firebaseUser = mFirebaseAuth.getCurrentUser(); // 로그인한 사용자 정보 읽기
+            Log.d("getUid : ", "getUid" + firebaseUser.getUid());
+            if(firebaseUser != null) {
+                Query query = mDatabaseRef.child("UserAccount").orderByChild("idToken").equalTo(firebaseUser.getUid());
+                query.addValueEventListener(new ValueEventListener() {
+
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        String pw = null;
+                        for (DataSnapshot userSnapshot : dataSnapshot.getChildren()) {
+                            pw = userSnapshot.child("user_pw").getValue(String.class);
+                            Log.d("getPw : ", "pw" + pw);
+                        }
+
+                        if(strData.isEmpty()){
+                            moveFocus(uPw);
+                            warning_pw.setText("비밀번호를 입력해주세요.");
+                        } else if (!pw.equals(uPw.getText().toString())) {
+                            warning_pw.setText("비밀번호를 확인해주세요.");
+                            warning_pw.setTextColor(Color.RED);
+                        }else{
+                            warning_pw.setText("");
+                            isVaildPw = true;
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        Toast.makeText(RegisterActivity.this, "정보를 읽는데 실패하였습니다.", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }else{
+                isVaildPw = true;
+            }
+            return true;
+        }
+    }
 
     // 비밀번호 확인 검사
     private TextWatcher uPwConfirmWatcher = new TextWatcher() {
@@ -312,26 +348,32 @@ public class RegisterActivity extends AppCompatActivity {
         public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
-            String strData = uPw.getText().toString();
-            String strDataConfirm = uPwConfirm.getText().toString();
-            if (isNewRegister) {
-                if (strData.length() < 6 || strData.length() > 16) {
-                    warning_pw.setText("6자~16자의 영문/숫자 조합으로 입력해주세요.");
-                    warning_pw.setTextColor(Color.RED);
-                } else if (strData.equals(strDataConfirm)) {
-                    warning_pw.setText("비밀번호가 일치합니다.");
-                    warning_pw.setTextColor(Color.parseColor("#16a54f"));
-                    isMachedPw = true;
-                } else {
-                    warning_pw.setText("비밀번호가 일치하지 않습니다.");
-                    warning_pw.setTextColor(Color.RED);
-                }
-                handler.removeCallbacks(runnable); // 기존의 검사 요청이 있다면 제거
-            }
+            handler.removeCallbacks(runnable); // 기존의 검사 요청이 있다면 제거
+            boolean isChekPwConfirm;
+            isChekPwConfirm = isChekPwConfirm();
         }
         @Override
         public void afterTextChanged(final Editable s) { }
     };
+    public boolean isChekPwConfirm(){
+        String strData2 = uPw.getText().toString();
+        String strData = uPwConfirm.getText().toString();
+        if (isNewRegister) {
+            if (strData.isEmpty()) {
+                moveFocus(uPw);
+            } else if (!strData.equals(strData2)) {
+                warning_pw.setText("비밀번호가 일치하지 않습니다.");
+                warning_pw.setTextColor(Color.RED);
+                return false;
+            } else {
+                warning_pw.setText("비밀번호가 일치합니다.");
+                warning_pw.setTextColor(Color.parseColor("#16a54f"));
+                isMachedPw = true;
+                return true;
+            }
+        }
+        return true;
+    }
 
     // 이름 검사
     private TextWatcher uNameWatcher = new TextWatcher() {
@@ -344,17 +386,24 @@ public class RegisterActivity extends AppCompatActivity {
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
             handler.removeCallbacks(runnable); // 기존의 검사 요청이 있다면 제거
-            String strData = uName.getText().toString();
-            if(strData.isEmpty()){
-                warning_name.setText("이름을 입력해주세요.");
-                warning_name.setTextColor(Color.RED);
-            }else{
-                warning_name.setText("");
-            }
+            boolean isCheck;
+            isCheck = isChekName();
         }
         @Override
         public void afterTextChanged(final Editable s) { }
     };
+    public boolean isChekName(){
+        String strData = uName.getText().toString();
+        if(strData.isEmpty()){
+            moveFocus(uName);
+            warning_name.setText("이름을 입력해주세요.");
+            warning_name.setTextColor(Color.RED);
+            return false;
+        }else{
+            warning_name.setText("");
+            return true;
+        }
+    }
 
     // 휴대폰 검사
     private TextWatcher uTelWatcher = new TextWatcher() {
@@ -367,22 +416,30 @@ public class RegisterActivity extends AppCompatActivity {
         public void onTextChanged(CharSequence s, int start, int before, int count) {
             // 타이핑 도중에 호출되는 메소드
             handler.removeCallbacks(runnable); // 기존의 검사 요청이 있다면 제거
-            String strData = uTel.getText().toString();
-
-            if(strData.isEmpty()){
-                warning_tel.setText("휴대폰 번호를 입력해주세요.");
-                warning_tel.setTextColor(Color.RED);
-            }else if(inputPatternChecker.isMob(strData)){
-                warning_tel.setText("");
-                isVaileTel = true;
-            }else{
-                warning_tel.setText("유효한 휴대폰 번호를 입력해주세요.");
-                warning_tel.setTextColor(Color.RED);
-            }
+            boolean isCheck;
+            isCheck = isChekPnums();
         }
         @Override
         public void afterTextChanged(final Editable s) { }
     };
+    public boolean isChekPnums(){
+        String strData = uTel.getText().toString();
+
+        if(strData.isEmpty()){
+            moveFocus(uTel);
+            warning_tel.setText("휴대폰 번호를 입력해주세요.");
+            warning_tel.setTextColor(Color.RED);
+            return false;
+        }else if(!inputPatternChecker.isMob(strData)){
+            warning_tel.setText("유효한 휴대폰 번호를 입력해주세요.");
+            warning_tel.setTextColor(Color.RED);
+            return false;
+        }else{
+            warning_tel.setText("");
+            isVaileTel = true;
+            return true;
+        }
+    }
     
     // 완료 버튼
     View.OnClickListener registerEvent = new View.OnClickListener() {
@@ -396,7 +453,7 @@ public class RegisterActivity extends AppCompatActivity {
             String strTel = uTel.getText().toString();
 
             // 중복 확인 완료
-            if(!strId.isEmpty() && !strPw.isEmpty() && !struPwConfirm.isEmpty() && !strName.isEmpty() && !strTel.isEmpty() &&
+            if(isChekEmail() && isChekPw() && isChekPwConfirm() && isChekName() && isChekPnums() &&
                     isDuplicateId && inputPatternChecker.isEmail(strId) && isNewRegister) {
                 // 회원가입 일때만
                     // Firebase Auth 처리 : 계정 생성
@@ -444,63 +501,18 @@ public class RegisterActivity extends AppCompatActivity {
                     });
             }
 
-            if(strId.isEmpty()){
-                // 이메일 주소 빈값일때
-                warning_email.setText("이메일 주소를 입력해주세요");
-                warning_email.setTextColor(Color.RED);
-            }else{
-                warning_pw.setText("");
-            }
 
-            if(strPw.isEmpty() && !isNewRegister) {
-                warning_pw.setText("비밀번호를 입력해주세요.");
-                warning_pw.setTextColor(Color.RED);
-            }else if(struPwConfirm.isEmpty() && isNewRegister){
-                warning_pw.setText("비밀번호를 입력해주세요.");
-                warning_pw.setTextColor(Color.RED);
-            }else if(isVaildPw && !isNewRegister){
-                warning_pw.setText("비밀번호를 확인해주세요.");
-                warning_pw.setTextColor(Color.RED);
-            }else{
-                warning_pw.setText("");
+            
+            // 검사
+            isChekEmail();
+            if(isDuplicateId){
+                warning_email.setText("사용가능한 이메일 주소입니다.");
+                warning_email.setTextColor(Color.parseColor("#16a54f"));
             }
-
-
-            if(strName.isEmpty()){
-                warning_name.setText("이름을 입력해주세요.");
-                warning_name.setTextColor(Color.RED);
-            }else{
-                warning_name.setText("");
-            }
-
-            if(strTel.isEmpty()){
-                warning_tel.setText("휴대폰 번호를 입력해주세요.");
-                warning_tel.setTextColor(Color.RED);
-            }else{
-                warning_tel.setText("");
-            }
-
-            // 포커스 주기
-            if(strTel.isEmpty()){
-                uTel.requestFocus();
-                scrollToFocusedTextView(uTel); // 화면 이동
-            }
-            if(strName.isEmpty()){
-                uName.requestFocus();
-                scrollToFocusedTextView(uName); // 화면 이동
-            }
-            if(!struPwConfirm.equals(strPw) && isNewRegister){
-                uPwConfirm.requestFocus();
-                scrollToFocusedTextView(uPwConfirm); // 화면 이동
-            }
-            if(strPw.isEmpty()){
-                uPw.requestFocus();
-                scrollToFocusedTextView(uPw); // 화면 이동
-            }
-            if(strId.isEmpty() && !isDuplicateId && isNewRegister && !inputPatternChecker.isEmail(strId)) {
-                uId.requestFocus();
-                scrollToFocusedTextView(uId); // 화면 이동
-            }
+            isChekPw();
+            isChekPwConfirm();
+            isChekName();
+            isChekPnums();
 
             if(!isNewRegister && !strId.isEmpty() && !strPw.isEmpty() && !strName.isEmpty() && !strTel.isEmpty()){
                 // 기본정보 수정일 때 update처리
@@ -521,6 +533,10 @@ public class RegisterActivity extends AppCompatActivity {
             }
         }
     };
+    public void moveFocus(View view){
+        view.requestFocus();
+        scrollToFocusedTextView(view); // 화면 이동
+    }
 
     // 포커스 받는 Textview로 이동
     private void scrollToFocusedTextView(View focusedTextView) {

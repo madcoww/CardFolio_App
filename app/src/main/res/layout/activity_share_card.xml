@@ -87,7 +87,7 @@
                                     app:layout_constraintStart_toStartOf="parent"
                                     app:layout_constraintTop_toTopOf="parent" />
 
-                                <ImageView
+                                <!--<ImageView
                                     android:id="@+id/imageView"
                                     android:layout_width="24dp"
                                     android:layout_height="24dp"
@@ -97,7 +97,7 @@
                                     app:layout_constraintEnd_toEndOf="parent"
                                     app:layout_constraintHorizontal_bias="0.995"
                                     app:layout_constraintStart_toEndOf="@+id/tv_share_uname"
-                                    app:layout_constraintTop_toTopOf="parent" />
+                                    app:layout_constraintTop_toTopOf="parent" />-->
 
                             </androidx.constraintlayout.widget.ConstraintLayout>
 

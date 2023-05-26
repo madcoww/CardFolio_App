@@ -49,21 +49,16 @@ public class ShareCardActivity extends AppCompatActivity {
     private final String toolbarName = "명함 공유하기";
     private BottomNavigationView bottomNavigationView;
     BottomNav bottomNav;
-
     private FirebaseAuth mFirebaseAuth;                    // 인증
-
     private DatabaseReference mDatabaseRef;                // DB
     private FirebaseUser firebaseUser;
-
     FirebaseStorage storage = FirebaseStorage.getInstance();
-
     private String s_card_id;
 
     private ImageView s_qr;
     private ImageView s_logo;
     private TextView  s_uname, s_cname, s_team_rank, s_pnum, s_email;
     private Button btn_store;
-
     private String share_strImgUri;
     private String  share_uname, share_cname, share_team, share_rank, share_pnum, share_email;
     private LinearLayout areaQr;
@@ -83,16 +78,10 @@ public class ShareCardActivity extends AppCompatActivity {
         TextView toolbarTitle = (TextView) findViewById(R.id.toolbar_title);
         toolbarTitle.setText(toolbarName);
 
-        // 하단 네비게이션
-//        bottomNavigationView = findViewById(R.id.bottom_nav);
-//        bottomNav = new BottomNav(bottomNavigationView);
-//        bottomNav.setBottomNavigationListener(this);
-
         // 파이어베이스
         mFirebaseAuth = FirebaseAuth.getInstance();
         mDatabaseRef  = FirebaseDatabase.getInstance().getReference("cardFolio");
         firebaseUser = mFirebaseAuth.getCurrentUser(); // 로그인한 사용자 정보 읽기
-
 
         s_logo = (ImageView) findViewById(R.id.img_share_logo);
         s_uname = (TextView) findViewById(R.id.tv_share_uname);
@@ -105,7 +94,6 @@ public class ShareCardActivity extends AppCompatActivity {
         areaQr = (LinearLayout) findViewById(R.id.areaQr);
         btn_store = (Button) findViewById(R.id.btn_store);
 
-        
         Intent thisIntent = getIntent();
         String callingIntent = thisIntent.getStringExtra("intent_name");
         s_card_id = thisIntent.getStringExtra("c_id");
@@ -220,7 +208,7 @@ public class ShareCardActivity extends AppCompatActivity {
 
     //OtherCards 등록 다른 사람 명함을 등록(스캔 후) 동작이 좋을 것으로 사료
     void uploadToRDB_rel(String user, String idForStore){
-        CardRel rData = new CardRel();
+        OtherCards rData = new OtherCards();
         rData.setU_id(user);
         rData.setC_id(idForStore);
 

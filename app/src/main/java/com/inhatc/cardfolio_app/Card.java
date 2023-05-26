@@ -12,9 +12,7 @@ import android.net.Uri;
 import java.io.Serializable;
 
 public class Card implements Serializable {
-
     private String c_id;
-
     private String card_logo;
     private String u_id;
     private String card_uname;

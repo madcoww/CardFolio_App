@@ -21,7 +21,6 @@ public class CardDao {
     public Card card;
     private static CardDao cardDao = new CardDao();;
     private ArrayList<Card> otherArrayList;
-
     private FirebaseAuth mFirebaseAuth = FirebaseAuth.getInstance();
     private DatabaseReference mDatabaseRef = FirebaseDatabase.getInstance().getReference("cardFolio");
 
@@ -74,6 +73,5 @@ public class CardDao {
             public void onCancelled(DatabaseError databaseError) {
             }
         });
-        //is_default를 0으로 바꿈, 읽어온 c_id와 파라미터 c_id가 일치할 경우 1로 바꿈
     }
 }

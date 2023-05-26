@@ -5,15 +5,12 @@ import java.util.Random;
 public class RandomCodeMaker {
     private static RandomCodeMaker randomCodeMaker = new RandomCodeMaker();
     private static String code;
-
     public RandomCodeMaker() {
         this.code = generateRandomCode();
     }
-
     public static RandomCodeMaker getRandomCodeMaker() {
         return randomCodeMaker;
     }
-
     public static String getCode() {
         return code;
     }

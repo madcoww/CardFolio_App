@@ -173,6 +173,8 @@ public class ViewCardActivity extends AppCompatActivity {
             }
         }
     };
+    
+    // 대표명함 설정
     private ArrayList<Card> otherArrayList;
     public void is_default(String c_id){
         //u_id가 일치하는 모든 데이터를 읽어와서, c_id를 읽어와서
@@ -238,6 +240,8 @@ public class ViewCardActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+    
+    // 데이터 읽어오기
     void load_data(String card_id){
         mDatabaseRef.child("CardInfo").child(card_id).addValueEventListener(new ValueEventListener() {
             @Override
@@ -297,6 +301,7 @@ public class ViewCardActivity extends AppCompatActivity {
         startActivity(intent);
         finish();
     }
+    
     //logo 이미지 불러오기
     void load_logo(){
         StorageReference storageRef = storage.getReference();

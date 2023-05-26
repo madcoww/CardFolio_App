@@ -52,12 +52,10 @@ public class MainActivity extends AppCompatActivity {
     private FirebaseUser firebaseUser;
     private BottomNavigationView bottomNavigationView;
     BottomNav bottomNav;
-
     private ArrayList<Card> mArrayList;
     private ArrayList<Card> otherArrayList;
     private ArrayList<Card> searchArrayList;
     private CustomAdapter mAdapter, otherAdapter, searchAdapter;
-
     static TabHost myTabHost = null;
     static TabHost.TabSpec myTabSpec;
     private EditText searchData;

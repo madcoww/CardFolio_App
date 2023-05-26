@@ -52,11 +52,7 @@ public class InputPatternChecker {
                 str);
     }
 
-
-
     // phone number checker
-    // xxx-xxx-xxxx (형식만 비교)
-    // - 은 없어야 함.
     public boolean isMob(String str) {
         return Pattern.matches("^\\d{2,3}\\d{3,4}\\d{4}$", str);
     }

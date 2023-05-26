@@ -63,22 +63,16 @@ import java.util.Random;
 
 
 public class RegisterCardActivity extends AppCompatActivity {
-
     private static String toolbarName;
     private BottomNavigationView bottomNavigationView;
     BottomNav bottomNav;
-
     private FirebaseAuth mFirebaseAuth;                    // 인증
     private DatabaseReference mDatabaseRef;                // DB
     private FirebaseUser firebaseUser;                // DB
-
     FirebaseStorage storage = FirebaseStorage.getInstance(); //스토리지
 
-
     private String c_user; //현재 접속한 유저
-
     private String card_id;
-
     private EditText cLogo, cName, cCname, cDept, cPos, cPnum, cEmail, cCaddr;
     private TextView warning_logo, warning_name, warning_cname, warning_cinfo, warning_pnum, warning_email, warning_addr;
     private InputPatternChecker inputPatternChecker;

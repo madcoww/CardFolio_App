@@ -23,7 +23,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 public class LoginActivity extends AppCompatActivity {
-
     private FirebaseAuth mFirebaseAuth;         // 인증
     private DatabaseReference mDatabaseRef;     // DB
     private EditText uId, uPw;                  // 입력 필드
@@ -97,6 +96,7 @@ public class LoginActivity extends AppCompatActivity {
         }
     };
 
+    // 로그인 요청
     public void requestLogin(){
         String strId = uId.getText().toString();
         String strPw = uPw.getText().toString();

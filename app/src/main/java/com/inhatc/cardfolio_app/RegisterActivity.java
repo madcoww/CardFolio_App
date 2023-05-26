@@ -533,6 +533,8 @@ public class RegisterActivity extends AppCompatActivity {
             }
         }
     };
+
+    // 포커스 이동
     public void moveFocus(View view){
         view.requestFocus();
         scrollToFocusedTextView(view); // 화면 이동

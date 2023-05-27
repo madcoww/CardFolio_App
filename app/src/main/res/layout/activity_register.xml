@@ -287,6 +287,99 @@
                     android:text=""
                     android:textColor="@color/gray"
                     android:textSize="@dimen/text_size_xs" />
+                <LinearLayout
+                    android:id="@+id/chapchaArea"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginBottom="@dimen/margin_md"
+                    android:gravity="center">
+                    <!-- 휴대폰 -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="@dimen/margin_sm"
+                            android:text="로봇이 아닌가요?"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/text_size_md" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/margin_sm"
+                            android:layout_marginBottom="@dimen/margin_sm"
+                            android:text="*"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/text_size_md" />
+
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="bottom"
+                        android:orientation="horizontal">
+                        <ImageView
+                            android:layout_width="300dp"
+                            android:layout_height="100dp"
+                            android:id="@+id/chapcha"/>
+
+                        <ImageView
+                            android:id="@+id/btn_refresh"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/icon_refresh"
+                            android:padding="@dimen/padding_sm"
+                            android:background="#FFF2F2F2"/>
+
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+                        <EditText
+                            android:id="@+id/chapchaOutput"
+                            android:layout_width="0dp"
+                            android:layout_weight="2"
+                            android:focusableInTouchMode="true"
+                            android:layout_height="@dimen/btn_height"
+                            android:layout_gravity="center"
+                            android:layout_marginVertical="@dimen/margin_sm"
+                            android:background="@drawable/edittext_left_background"
+                            android:hint="인증키를 임력해주세요"
+                            android:singleLine="true"
+                            android:textColor="@color/black"
+                            android:textColorHint="@color/hint"
+                            android:inputType="textEmailAddress"/>
+
+
+                        <android.widget.Button
+                            android:id="@+id/chapchaOutput_chk"
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="@dimen/btn_height"
+                            android:layout_gravity="center"
+                            android:layout_marginVertical="@dimen/margin_sm"
+                            android:background="@drawable/button_right_background"
+                            android:text="확인"
+                            android:singleLine="true"
+                            android:textColor="@color/white"/>
+                    </LinearLayout>
+                    <TextView
+                        android:id="@+id/warning_chapcha"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/margin_sm"
+                        android:gravity="left"
+                        android:text=""
+                        android:textColor="@color/gray"
+                        android:textSize="@dimen/text_size_xs" />
+                </LinearLayout>
 
             </LinearLayout>
         </ScrollView>

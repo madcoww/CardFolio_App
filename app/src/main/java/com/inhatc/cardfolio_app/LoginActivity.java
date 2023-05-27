@@ -5,8 +5,12 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Rect;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -15,6 +19,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.auth.api.signin.internal.Storage;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -22,11 +27,31 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import org.json.JSONObject;
+import org.json.JSONException;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+
 public class LoginActivity extends AppCompatActivity {
     private FirebaseAuth mFirebaseAuth;         // 인증
     private DatabaseReference mDatabaseRef;     // DB
     private EditText uId, uPw;                  // 입력 필드
     private Button btnLogin;
+    private String proc1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,11 +96,11 @@ public class LoginActivity extends AppCompatActivity {
         public void onClick(View v) {
             switch (v.getId()) {
                 case R.id.et_to_register:
-                    Intent registerIntent = new Intent(LoginActivity.this, RegisterActivity.class);
-                    registerIntent.putExtra("intent_name", "registerIntent");
-                    startActivity(registerIntent);
+                        //result = reCap_Result(proc1, proc2);
+                        Intent registerIntent = new Intent(LoginActivity.this, RegisterActivity.class);
+                        registerIntent.putExtra("intent_name", "registerIntent");
+                        startActivity(registerIntent);
                     break;
-
                 case R.id.btn_login:
                     requestLogin(); // 로그인 처리
                     break;
@@ -115,4 +140,5 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
     }
+
 }
